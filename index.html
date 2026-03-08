@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Canada Tax Refund / Tax Owing Estimator (2025)</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;
+      --panel:#ffffff;
+      --text:#1e293b;
+      --muted:#64748b;
+      --line:#dbe2ea;
+      --blue:#2563eb;
+      --blue-2:#1d4ed8;
+      --green:#0f766e;
+      --green-bg:#ecfdf5;
+      --red:#b91c1c;
+      --red-bg:#fef2f2;
+      --amber:#92400e;
+      --amber-bg:#fffbeb;
+      --slate:#0f172a;
+      --shadow:0 10px 30px rgba(15,23,42,.08);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      line-height:1.4;
+    }
+    .app{
+      max-width:1500px;
+      margin:0 auto;
+      padding:20px;
+    }
+    .hero{
+      background:linear-gradient(135deg,#0f172a,#1e3a8a 55%,#2563eb);
+      color:#fff;
+      border-radius:24px;
+      padding:28px;
+      box-shadow:var(--shadow);
+      margin-bottom:20px;
+    }
+    .hero h1{margin:0 0 8px;font-size:30px}
+    .hero p{margin:0;color:rgba(255,255,255,.9)}
+    .hero-grid{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:18px;
+      align-items:start;
+      margin-top:18px;
+    }
+    .banner-note{
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.15);
+      padding:14px 16px;
+      border-radius:14px;
+      font-size:14px;
+    }
+    .shell{
+      display:grid;
+      grid-template-columns:280px 1fr 360px;
+      gap:20px;
+      align-items:start;
+    }
+    .panel{
+      background:var(--panel);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    .sidebar{
+      position:sticky;
+      top:16px;
+      padding:16px;
+    }
+    .sidebar h2{
+      margin:0 0 14px;
+      font-size:16px;
+    }
+    .nav-list{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .nav-btn{
+      width:100%;
+      text-align:left;
+      border:1px solid var(--line);
+      background:#fff;
+      padding:12px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      color:var(--text);
+      font-weight:600;
+    }
+    .nav-btn:hover,.nav-btn.active{
+      border-color:var(--blue);
+      background:#eff6ff;
+      color:var(--blue-2);
+    }
+    .main{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .card{
+      padding:20px;
+    }
+    .card h2{
+      margin:0 0 8px;
+      font-size:20px;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:16px;
+    }
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:14px;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .field label{
+      font-weight:600;
+      font-size:14px;
+    }
+    .help{
+      color:var(--muted);
+      font-size:12px;
+    }
+    .field input,.field select,.field textarea{
+      width:100%;
+      padding:11px 12px;
+      border:1px solid #cbd5e1;
+      border-radius:12px;
+      background:#fff;
+      color:var(--text);
+      font-size:14px;
+    }
+    .field textarea{min-height:92px;resize:vertical}
+    .field input:focus,.field select:focus,.field textarea:focus{
+      outline:none;border-color:var(--blue);
+      box-shadow:0 0 0 3px rgba(37,99,235,.12);
+    }
+    .col-12{grid-column:span 12}
+    .col-9{grid-column:span 9}
+    .col-8{grid-column:span 8}
+    .col-6{grid-column:span 6}
+    .col-4{grid-column:span 4}
+    .col-3{grid-column:span 3}
+    .toggle-row{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+    }
+    .toggle{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      background:#f8fafc;
+    }
+    .toggle label{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:600;
+      cursor:pointer;
+    }
+    .toggle input{width:auto;transform:scale(1.1)}
+    .toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:8px;
+    }
+    button{
+      border:none;
+      background:var(--blue);
+      color:#fff;
+      padding:11px 16px;
+      border-radius:12px;
+      cursor:pointer;
+      font-weight:700;
+    }
+    button:hover{background:var(--blue-2)}
+    button.secondary{
+      background:#e2e8f0;
+      color:#0f172a;
+    }
+    button.secondary:hover{background:#cbd5e1}
+    button.ghost{
+      background:#fff;
+      color:var(--blue);
+      border:1px solid var(--blue);
+    }
+    .summary{
+      position:sticky;
+      top:16px;
+      padding:16px;
+    }
+    .big-result{
+      border-radius:18px;
+      padding:18px;
+      margin-bottom:14px;
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+    }
+    .big-result.owing{
+      background:var(--red-bg);
+      border-color:#fecaca;
+    }
+    .big-result.refund{
+      background:var(--green-bg);
+      border-color:#bbf7d0;
+    }
+    .eyebrow{
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      font-size:12px;
+      font-weight:800;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .result-amount{
+      font-size:34px;
+      font-weight:800;
+      margin:4px 0 8px;
+    }
+    .mini-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
+    }
+    .mini{
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:12px;
+      background:#fff;
+    }
+    .mini .k{
+      font-size:12px;
+      color:var(--muted);
+      margin-bottom:4px;
+    }
+    .mini .v{
+      font-weight:800;
+      font-size:16px;
+    }
+    .alert{
+      padding:12px 14px;
+      border-radius:12px;
+      margin-top:10px;
+      font-size:14px;
+    }
+    .alert.warn{
+      background:var(--amber-bg);
+      color:var(--amber);
+      border:1px solid #fde68a;
+    }
+    .alert.info{
+      background:#eff6ff;
+      color:#1d4ed8;
+      border:1px solid #bfdbfe;
+    }
+    .alert.error{
+      background:var(--red-bg);
+      color:var(--red);
+      border:1px solid #fecaca;
+    }
+    details{
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px 14px;
+      background:#fff;
+    }
+    details + details{margin-top:10px}
+    summary{
+      cursor:pointer;
+      font-weight:700;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+      font-size:14px;
+    }
+    th,td{
+      border-bottom:1px solid var(--line);
+      padding:10px 8px;
+      text-align:left;
+      vertical-align:top;
+    }
+    th{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+    .pill{
+      display:inline-block;
+      padding:5px 9px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:700;
+      background:#e2e8f0;
+      color:#0f172a;
+    }
+    .pill.good{background:#dcfce7;color:#166534}
+    .pill.warn{background:#fef3c7;color:#92400e}
+    .pill.bad{background:#fee2e2;color:#991b1b}
+    .section-actions{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:12px;
+      flex-wrap:wrap;
+    }
+    .small{
+      font-size:12px;
+      color:var(--muted);
+    }
+    .footer-note{
+      margin-top:12px;
+      font-size:12px;
+      color:var(--muted);
+    }
+    .hidden{display:none!important}
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      background:#f1f5f9;
+      color:#334155;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:12px;
+      font-weight:700;
+      margin:4px 6px 0 0;
+    }
+    @media (max-width:1200px){
+      .shell{grid-template-columns:1fr}
+      .sidebar,.summary{position:relative;top:0}
+      .hero-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:900px){
+      .col-6,.col-4,.col-3,.col-8,.col-9{grid-column:span 12}
+      .toggle-row{grid-template-columns:1fr}
+      .mini-grid{grid-template-columns:1fr}
+      .hero h1{font-size:24px}
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <section class="hero panel">
+      <h1>Canada Tax Refund / Tax Owing Estimator</h1>
+      <p>Estimate 2025 federal and provincial/territorial personal income tax, source deductions, credits, and whether you are due a refund or owe a balance.</p>
+      <div class="hero-grid">
+        <div class="banner-note">
+          <strong>Important:</strong> This is an estimator, not tax advice or certified filing software. It is designed around a practical 2025 rule engine with transparent assumptions, review flags, and detailed data entry. Specialized schedules, rare elections, and some province-specific refundable credits remain partially modeled and should be verified against CRA and Revenu Québec guidance.
+        </div>
+        <div class="banner-note">
+          <div><strong>Tax year:</strong> 2025</div>
+          <div><strong>Mode:</strong> Personal income estimate</div>
+          <div><strong>Québec:</strong> Separate provincial logic and federal abatement estimate included</div>
+          <div><strong>Data status:</strong> Configurable rule objects for all provinces/territories</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="shell">
+      <aside class="sidebar panel" aria-label="Section navigation">
+        <h2>Sections</h2>
+        <div class="nav-list" id="navList">
+          <button class="nav-btn active" data-target="profile">Tax profile</button>
+          <button class="nav-btn" data-target="income">Income</button>
+          <button class="nav-btn" data-target="deductions">Deductions</button>
+          <button class="nav-btn" data-target="federal">Federal credits</button>
+          <button class="nav-btn" data-target="provincial">Provincial credits</button>
+          <button class="nav-btn" data-target="payments">Payments</button>
+          <button class="nav-btn" data-target="results">Results</button>
+        </div>
+        <div class="alert info" style="margin-top:14px">
+          Your province or territory of residence on December 31, 2025 generally determines provincial or territorial tax treatment.
+        </div>
+        <div class="footer-note">
+          Built for estimation, transparency, and scenario testing. Save and load scenarios locally in your browser.
+        </div>
+      </aside>
+
+      <main class="main">
+        <section id="profile" class="panel card">
+          <div class="section-actions">
+            <div>
+              <h2>Tax profile</h2>
+              <div class="sub">Set the taxpayer profile, residency, family status, and date-sensitive eligibility items.</div>
+            </div>
+            <div class="toolbar">
+              <button type="button" id="recalcBtn">Recalculate</button>
+              <button type="button" class="secondary" id="saveBtn">Save scenario</button>
+              <button type="button" class="secondary" id="loadBtn">Load scenario</button>
+              <button type="button" class="ghost" id="resetBtn">Reset all</button>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="field col-3">
+              <label for="province">Province / territory of residence on Dec 31, 2025</label>
+              <select id="province" aria-label="Province or territory">
+                <option value="AB">Alberta</option>
+                <option value="BC">British Columbia</option>
+                <option value="MB">Manitoba</option>
+                <option value="NB">New Brunswick</option>
+                <option value="NL">Newfoundland and Labrador</option>
+                <option value="NT">Northwest Territories</option>
+                <option value="NS">Nova Scotia</option>
+                <option value="NU">Nunavut</option>
+                <option value="ON" selected>Ontario</option>
+                <option value="PE">Prince Edward Island</option>
+                <option value="QC">Québec</option>
+                <option value="SK">Saskatchewan</option>
+                <option value="YT">Yukon</option>
+              </select>
+            </div>
+            <div class="field col-3">
+              <label for="birthDate">Date of birth</label>
+              <input id="birthDate" type="date" />
+              <div class="help">Used for age amount and senior screening.</div>
+            </div>
+            <div class="field col-3">
+              <label for="ageOverride">Age on Dec 31, 2025 (optional override)</label>
+              <input id="ageOverride" type="number" min="0" max="120" step="1" placeholder="Auto from DOB" />
+            </div>
+            <div class="field col-3">
+              <label for="maritalStatus">Marital status at year-end</label>
+              <select id="maritalStatus">
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="commonlaw">Common-law</option>
+                <option value="separated">Separated</option>
+                <option value="divorced">Divorced</option>
+                <option value="widowed">Widowed</option>
+              </select>
+            </div>
+
+            <div class="field col-3">
+              <label for="maritalChangeDate">Marital status change date</label>
+              <input id="maritalChangeDate" type="date" />
+              <div class="help">Use if status changed during the year.</div>
+            </div>
+            <div class="field col-3">
+              <label for="residencyStatus">Canadian resident for tax purposes</label>
+              <select id="residencyStatus">
+                <option value="resident">Resident all year</option>
+                <option value="partyear">Part-year resident</option>
+                <option value="nonresident">Non-resident</option>
+              </select>
+            </div>
+            <div class="field col-3">
+              <label for="immigrationDate">Entered Canada / became resident</label>
+              <input id="immigrationDate" type="date" />
+            </div>
+            <div class="field col-3">
+              <label for="emigrationDate">Emigrated / ceased residency</label>
+              <input id="emigrationDate" type="date" />
+            </div>
+
+            <div class="field col-3">
+              <label for="dependants">Number of dependants</label>
+              <input id="dependants" type="number" min="0" step="1" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="monthsWithDependants">Months lived with spouse/dependant</label>
+              <input id="monthsWithDependants" type="number" min="0" max="12" step="1" value="12" />
+            </div>
+            <div class="field col-3">
+              <label for="medicalPeriodStart">Medical expense period start</label>
+              <input id="medicalPeriodStart" type="date" />
+            </div>
+            <div class="field col-3">
+              <label for="medicalPeriodEnd">Medical expense period end</label>
+              <input id="medicalPeriodEnd" type="date" />
+            </div>
+
+            <div class="col-12">
+              <div class="toggle-row">
+                <div class="toggle"><label><input id="isStudent" type="checkbox" /> Student</label></div>
+                <div class="toggle"><label><input id="isSenior" type="checkbox" /> Senior / age-based review</label></div>
+                <div class="toggle"><label><input id="isSelfEmployed" type="checkbox" /> Self-employed</label></div>
+                <div class="toggle"><label><input id="isDisabled" type="checkbox" /> Disability-related eligibility</label></div>
+                <div class="toggle"><label><input id="isNorthernResident" type="checkbox" /> Northern resident</label></div>
+                <div class="toggle"><label><input id="isIndigenousExempt" type="checkbox" /> Indigenous exemption review</label></div>
+                <div class="toggle"><label><input id="quebecResidentToggle" type="checkbox" /> Québec resident handling</label></div>
+                <div class="toggle"><label><input id="ownsHome" type="checkbox" /> Owns home / property tax inputs</label></div>
+                <div class="toggle"><label><input id="renter" type="checkbox" /> Renter / rent-credit screening</label></div>
+              </div>
+            </div>
+
+            <div class="field col-3">
+              <label for="homePurchaseDate">Home purchase date</label>
+              <input id="homePurchaseDate" type="date" />
+            </div>
+            <div class="field col-3">
+              <label for="northernStartDate">Northern residency start date</label>
+              <input id="northernStartDate" type="date" />
+            </div>
+            <div class="field col-3">
+              <label for="northernEndDate">Northern residency end date</label>
+              <input id="northernEndDate" type="date" />
+            </div>
+            <div class="field col-3">
+              <label for="disabilityStartDate">Disability eligibility start date</label>
+              <input id="disabilityStartDate" type="date" />
+            </div>
+
+            <div class="field col-12">
+              <label for="profileNotes">Profile notes</label>
+              <textarea id="profileNotes" placeholder="Optional notes: support payments, cross-border income, residency facts, unusual situations..."></textarea>
+            </div>
+          </div>
+        </section>
+
+        <section id="income" class="panel card">
+          <h2>Income</h2>
+          <div class="sub">Enter income amounts in Canadian dollars. Use net amounts where a line explicitly says net.</div>
+          <div class="grid">
+            <div class="field col-3"><label for="employmentIncome">Employment income (T4)</label><input id="employmentIncome" type="number" min="0" step="0.01" value="70000" /></div>
+            <div class="field col-3"><label for="taxWithheldEmployment">Tax withheld on employment income</label><input id="taxWithheldEmployment" type="number" min="0" step="0.01" value="12000" /></div>
+            <div class="field col-3"><label for="cppContrib">CPP contributions</label><input id="cppContrib" type="number" min="0" step="0.01" value="3800" /></div>
+            <div class="field col-3"><label for="eiPremiums">EI premiums</label><input id="eiPremiums" type="number" min="0" step="0.01" value="1050" /></div>
+
+            <div class="field col-3"><label for="cpp2Contrib">CPP2 / additional CPP</label><input id="cpp2Contrib" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="commissionIncome">Commission income</label><input id="commissionIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="businessIncome">Self-employment business income</label><input id="businessIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="professionalIncome">Professional income</label><input id="professionalIncome" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="farmingIncome">Farming income</label><input id="farmingIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="fishingIncome">Fishing income</label><input id="fishingIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="rentalIncome">Rental income (net)</label><input id="rentalIncome" type="number" min="-9999999" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="partnershipIncome">Partnership income (net)</label><input id="partnershipIncome" type="number" min="-9999999" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="interestIncome">Interest income</label><input id="interestIncome" type="number" min="0" step="0.01" value="200" /></div>
+            <div class="field col-3"><label for="eligibleDividends">Eligible dividends</label><input id="eligibleDividends" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="nonEligibleDividends">Non-eligible dividends</label><input id="nonEligibleDividends" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="capitalGains">Taxable capital gains</label><input id="capitalGains" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="capitalLossesApplied">Capital losses applied</label><input id="capitalLossesApplied" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="foreignIncome">Foreign income</label><input id="foreignIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="pensionIncome">Pension income</label><input id="pensionIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="rrifIncome">RRIF income</label><input id="rrifIncome" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="oasIncome">OAS</label><input id="oasIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="cppBenefits">CPP / QPP benefits</label><input id="cppBenefits" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="eiBenefits">Employment insurance benefits</label><input id="eiBenefits" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="workersComp">Workers’ compensation</label><input id="workersComp" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="socialAssistance">Social assistance</label><input id="socialAssistance" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="supportReceived">Support payments received</label><input id="supportReceived" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="respIncome">RESP / EAP taxable amounts</label><input id="respIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="scholarships">Scholarships / bursaries / grants</label><input id="scholarships" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="lumpSum">Lump-sum payments</label><input id="lumpSum" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="otherTaxableIncome">Other taxable income</label><input id="otherTaxableIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="otherNonTaxableIncome">Other non-taxable income</label><input id="otherNonTaxableIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="withholdingOther">Other tax withheld</label><input id="withholdingOther" type="number" min="0" step="0.01" value="0" /></div>
+          </div>
+        </section>
+
+        <section id="deductions" class="panel card">
+          <h2>Deductions and adjustments</h2>
+          <div class="sub">These reduce net income or taxable income depending on the item.</div>
+          <div class="grid">
+            <div class="field col-3"><label for="rrspContrib">RRSP contributions</label><input id="rrspContrib" type="number" min="0" step="0.01" value="3000" /></div>
+            <div class="field col-3"><label for="prppContrib">PRPP contributions</label><input id="prppContrib" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="rppContrib">RPP contributions</label><input id="rppContrib" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="fhsaDeduction">FHSA deduction</label><input id="fhsaDeduction" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="unionDues">Union / professional dues</label><input id="unionDues" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="childCareExpenses">Child care expenses</label><input id="childCareExpenses" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="childCareStart">Child care period start</label><input id="childCareStart" type="date" /></div>
+            <div class="field col-3"><label for="childCareEnd">Child care period end</label><input id="childCareEnd" type="date" /></div>
+
+            <div class="field col-3"><label for="movingExpenses">Moving expenses</label><input id="movingExpenses" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="supportPaid">Support payments made</label><input id="supportPaid" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="carryingCharges">Carrying charges / interest</label><input id="carryingCharges" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="employmentExpenses">Employment expenses</label><input id="employmentExpenses" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="clergyResidence">Clergy residence deduction</label><input id="clergyResidence" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="northernDeduction">Northern residents deduction</label><input id="northernDeduction" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="businessHomeOffice">Business-use-of-home estimate</label><input id="businessHomeOffice" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="selfEmploymentExpenses">Self-employment expenses</label><input id="selfEmploymentExpenses" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="tuitionCarryforwardApplied">Tuition carryforward applied</label><input id="tuitionCarryforwardApplied" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="tradeTools">Tradeperson / educator expenses</label><input id="tradeTools" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="cppEnhancementDeduction">CPP/QPP enhancement deduction</label><input id="cppEnhancementDeduction" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="otherDeductions">Other deductions</label><input id="otherDeductions" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-12"><label for="deductionNotes">Deduction notes</label><textarea id="deductionNotes" placeholder="Optional notes for unusual deduction facts or documentation reminders"></textarea></div>
+          </div>
+        </section>
+
+        <section id="federal" class="panel card">
+          <h2>Federal credits</h2>
+          <div class="sub">Use actual eligible amounts where known. The estimator applies federal credit rates and visible assumptions.</div>
+          <div class="grid">
+            <div class="field col-3"><label for="spouseNetIncome">Spouse / partner net income</label><input id="spouseNetIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="eligibleDependantAmount">Eligible dependant amount</label><input id="eligibleDependantAmount" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="caregiverAmount">Canada caregiver amount</label><input id="caregiverAmount" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="disabilityAmount">Disability amount</label><input id="disabilityAmount" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="dependantDisabilityTransfer">Disability amount transferred from dependant</label><input id="dependantDisabilityTransfer" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="medicalExpenses">Medical expenses</label><input id="medicalExpenses" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="charitableDonations">Charitable donations / gifts</label><input id="charitableDonations" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="tuitionAmount">Current-year tuition amount</label><input id="tuitionAmount" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="studentLoanInterest">Student loan interest</label><input id="studentLoanInterest" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="pensionIncomeAmountEligible">Eligible pension income for credit</label><input id="pensionIncomeAmountEligible" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="homeAccessibilityExpenses">Home accessibility expenses</label><input id="homeAccessibilityExpenses" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="firstTimeHomeBuyerEligible">First-time home buyer amount eligible</label><input id="firstTimeHomeBuyerEligible" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="adoptionExpenses">Adoption expenses</label><input id="adoptionExpenses" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="volunteerAmount">Volunteer firefighter / rescue amount</label><input id="volunteerAmount" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="multigenRenovation">Multigenerational home renovation credit base</label><input id="multigenRenovation" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="labourMobilityDeduction">Labour mobility deduction</label><input id="labourMobilityDeduction" type="number" min="0" step="0.01" value="0" /></div>
+          </div>
+        </section>
+
+        <section id="provincial" class="panel card">
+          <h2>Provincial / territorial credits</h2>
+          <div class="sub">Province-specific fields change interpretation based on the selected jurisdiction. Representative credits are modeled directly, with a framework for expansion and review flags where detailed schedules may be needed.</div>
+
+          <div class="grid">
+            <div class="field col-3">
+              <label for="provPoliticalContrib">Provincial political contribution amount</label>
+              <input id="provPoliticalContrib" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="provMedicalExpenses">Provincial medical expenses</label>
+              <input id="provMedicalExpenses" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="provDonations">Provincial donations amount</label>
+              <input id="provDonations" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="provTuitionAmount">Provincial tuition amount</label>
+              <input id="provTuitionAmount" type="number" min="0" step="0.01" value="0" />
+            </div>
+
+            <div class="field col-3">
+              <label for="rentPaidAnnual">Annual rent paid</label>
+              <input id="rentPaidAnnual" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="propertyTaxPaid">Property tax paid</label>
+              <input id="propertyTaxPaid" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="rentStartDate">Rent / occupancy start date</label>
+              <input id="rentStartDate" type="date" />
+            </div>
+            <div class="field col-3">
+              <label for="rentEndDate">Rent / occupancy end date</label>
+              <input id="rentEndDate" type="date" />
+            </div>
+
+            <div class="field col-3">
+              <label for="ontFertilityExpenses">Ontario fertility treatment expenses</label>
+              <input id="ontFertilityExpenses" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="ontEnergyPropertyInput">Ontario energy/property tax base</label>
+              <input id="ontEnergyPropertyInput" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="ontNorthernEnergyInput">Northern Ontario energy credit base</label>
+              <input id="ontNorthernEnergyInput" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="qcChildcareExpenses">Québec childcare expenses</label>
+              <input id="qcChildcareExpenses" type="number" min="0" step="0.01" value="0" />
+            </div>
+
+            <div class="field col-3">
+              <label for="qcSolidarityEstimate">Québec solidarity / family estimate input</label>
+              <input id="qcSolidarityEstimate" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="bcLowIncomeExtra">BC low-income reduction input override</label>
+              <input id="bcLowIncomeExtra" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="abOtherCredits">Alberta other credit input</label>
+              <input id="abOtherCredits" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field col-3">
+              <label for="otherProvCredits">Other province-specific credit amount</label>
+              <input id="otherProvCredits" type="number" min="0" step="0.01" value="0" />
+            </div>
+
+            <div class="field col-12">
+              <label for="provNotes">Provincial notes</label>
+              <textarea id="provNotes" placeholder="Examples: Ontario Trillium screening details, Québec family situation, territory residency details, local credits, exceptional provincial schedules"></textarea>
+            </div>
+          </div>
+
+          <div class="alert info" id="provinceHint">Province-specific notes will appear here based on the selected jurisdiction.</div>
+        </section>
+
+        <section id="payments" class="panel card">
+          <h2>Payments, transfers, and refund calculation inputs</h2>
+          <div class="sub">These items affect the balance after tax payable is computed.</div>
+          <div class="grid">
+            <div class="field col-3"><label for="instalmentsPaid">Instalment payments made</label><input id="instalmentsPaid" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="priorYearBalancePaid">Prior-year balance paid</label><input id="priorYearBalancePaid" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="foreignTaxCredits">Foreign tax credits</label><input id="foreignTaxCredits" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="tuitionTransferReceived">Tuition transfer received</label><input id="tuitionTransferReceived" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="tuitionTransferGiven">Tuition transfer given</label><input id="tuitionTransferGiven" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="dividendTaxCreditManual">Dividend tax credit override</label><input id="dividendTaxCreditManual" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="cwbAdvancePayments">Canada workers benefit advance payments</label><input id="cwbAdvancePayments" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="benefitRepayments">Benefit repayments</label><input id="benefitRepayments" type="number" min="0" step="0.01" value="0" /></div>
+
+            <div class="field col-3"><label for="otherCreditsApplied">Other credits already applied</label><input id="otherCreditsApplied" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="extensionPayments">Payments made on filing extension</label><input id="extensionPayments" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="rentMonths">Months with rent / occupancy</label><input id="rentMonths" type="number" min="0" max="12" step="1" value="12" /></div>
+            <div class="field col-3"><label for="tuitionMonths">Months of tuition attendance</label><input id="tuitionMonths" type="number" min="0" max="12" step="1" value="0" /></div>
+          </div>
+        </section>
+
+        <section id="results" class="panel card">
+          <h2>Calculation details</h2>
+          <div class="sub">Review formulas, line items, assumptions, and warnings.</div>
+
+          <details open>
+            <summary>High-level summary</summary>
+            <div id="summaryTableWrap"></div>
+          </details>
+
+          <details>
+            <summary>Federal details</summary>
+            <div id="federalTableWrap"></div>
+          </details>
+
+          <details>
+            <summary>Provincial / territorial details</summary>
+            <div id="provincialTableWrap"></div>
+          </details>
+
+          <details>
+            <summary>Credits and deductions used</summary>
+            <div id="creditsTableWrap"></div>
+          </details>
+
+          <details>
+            <summary>Payments and withholding</summary>
+            <div id="paymentsTableWrap"></div>
+          </details>
+
+          <details>
+            <summary>Assumptions and review flags</summary>
+            <div id="flagsWrap"></div>
+          </details>
+        </section>
+      </main>
+
+      <aside class="summary panel" aria-label="Refund summary">
+        <div id="bigResult" class="big-result refund">
+          <div class="eyebrow">Estimated result</div>
+          <div id="resultLabel">Refund</div>
+          <div id="resultAmount" class="result-amount">$0</div>
+          <div id="resultExplanation" class="small">Enter your data and recalculate to see an estimate.</div>
+        </div>
+
+        <div class="mini-grid">
+          <div class="mini"><div class="k">Total income</div><div class="v" id="miniTotalIncome">$0</div></div>
+          <div class="mini"><div class="k">Taxable income</div><div class="v" id="miniTaxableIncome">$0</div></div>
+          <div class="mini"><div class="k">Federal tax</div><div class="v" id="miniFederalTax">$0</div></div>
+          <div class="mini"><div class="k">Provincial tax</div><div class="v" id="miniProvTax">$0</div></div>
+          <div class="mini"><div class="k">Effective tax rate</div><div class="v" id="miniEffectiveRate">0%</div></div>
+          <div class="mini"><div class="k">Marginal tax rate</div><div class="v" id="miniMarginalRate">0%</div></div>
+          <div class="mini"><div class="k">Credits used</div><div class="v" id="miniCredits">$0</div></div>
+          <div class="mini"><div class="k">Warnings</div><div class="v" id="miniWarnings">0</div></div>
+        </div>
+
+        <div class="alert warn" id="disclaimerBox">
+          This estimate is intended for planning and scenario comparison. Final tax results depend on actual slips, schedules, official software, and legal eligibility for each item.
+        </div>
+
+        <div style="margin-top:14px">
+          <div class="small">Data assumptions / version</div>
+          <div class="badge">Tax year: 2025</div>
+          <div class="badge">Federal BPA: income-tested</div>
+          <div class="badge">Ontario health premium modeled</div>
+          <div class="badge">Québec abatement estimated</div>
+          <div class="badge">All provinces/territories supported</div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const FEDERAL = {
+      year: 2025,
+      creditRate: 0.145,
+      donationRateLow: 0.145,
+      donationRateHigh: 0.29,
+      donationThreshold: 200,
+      taxBrackets: [
+        { upTo: 57375, rate: 0.145 },
+        { upTo: 114750, rate: 0.205 },
+        { upTo: 177882, rate: 0.26 },
+        { upTo: 253414, rate: 0.29 },
+        { upTo: Infinity, rate: 0.33 }
+      ],
+      basicPersonalAmount: { max: 16129, min: 14538, phaseStart: 177882, phaseEnd: 253414 },
+      ageAmount: { max: 9396, ageThreshold: 65, incomeStart: 45652, reductionRate: 0.15 },
+      pensionCreditMax: 2000,
+      employmentAmount: 1474,
+      disabilityAmountDefault: 9872,
+      firstTimeHomeBuyerAmount: 10000,
+      homeAccessibilityLimit: 20000,
+      multigenRenovationLimit: 50000,
+      medicalExpenseThresholdRate: 0.03,
+      medicalExpenseThresholdCap: 2759
+    };
+
+    const PROVINCES = {
+      AB: {
+        name: "Alberta",
+        basicPersonalAmount: 22123,
+        creditRate: 0.08,
+        taxBrackets: [
+          { upTo: 60000, rate: 0.08 },
+          { upTo: 151234, rate: 0.10 },
+          { upTo: 181481, rate: 0.12 },
+          { upTo: 241974, rate: 0.13 },
+          { upTo: 362961, rate: 0.14 },
+          { upTo: Infinity, rate: 0.15 }
+        ],
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        lowIncomeReduction: null,
+        surtax: null
+      },
+      BC: {
+        name: "British Columbia",
+        basicPersonalAmount: 12932,
+        creditRate: 0.0506,
+        taxBrackets: [
+          { upTo: 49279, rate: 0.0506 },
+          { upTo: 98560, rate: 0.077 },
+          { upTo: 113158, rate: 0.105 },
+          { upTo: 137407, rate: 0.1229 },
+          { upTo: 186306, rate: 0.147 },
+          { upTo: 259829, rate: 0.168 },
+          { upTo: Infinity, rate: 0.205 }
+        ],
+        lowIncomeReduction: { max: 540, start: 0, reductionRate: 0.0356, threshold: 0 },
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        surtax: null
+      },
+      MB: {
+        name: "Manitoba",
+        basicPersonalAmount: 15780,
+        creditRate: 0.108,
+        taxBrackets: [
+          { upTo: 47000, rate: 0.108 },
+          { upTo: 100000, rate: 0.1275 },
+          { upTo: Infinity, rate: 0.174 }
+        ],
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        surtax: null
+      },
+      NB: {
+        name: "New Brunswick",
+        basicPersonalAmount: 13396,
+        creditRate: 0.094,
+        taxBrackets: [
+          { upTo: 51306, rate: 0.094 },
+          { upTo: 102614, rate: 0.14 },
+          { upTo: 190060, rate: 0.16 },
+          { upTo: Infinity, rate: 0.195 }
+        ],
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        surtax: null
+      },
+      NL: {
+        name: "Newfoundland and Labrador",
+        basicPersonalAmount: 11067,
+        creditRate: 0.087,
+        taxBrackets: [
+          { upTo: 44192, rate: 0.087 },
+          { upTo: 88382, rate: 0.145 },
+          { upTo: 157792, rate: 0.158 },
+          { upTo: 220910, rate: 0.178 },
+          { upTo: 282214, rate: 0.198 },
+          { upTo: 564429, rate: 0.208 },
+          { upTo: 1128858, rate: 0.213 },
+          { upTo: Infinity, rate: 0.218 }
+        ],
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        surtax: null
+      },
+      NT: {
+        name: "Northwest Territories",
+        basicPersonalAmount: 17373,
+        creditRate: 0.059,
+        taxBrackets: [
+          { upTo: 51964, rate: 0.059 },
+          { upTo: 103930, rate: 0.086 },
+          { upTo: 168967, rate: 0.122 },
+          { upTo: Infinity, rate: 0.1405 }
+        ],
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        surtax: null
+      },
+      NS: {
+        name: "Nova Scotia",
+        basicPersonalAmount: 11481,
+        creditRate: 0.0879,
+        taxBrackets: [
+          { upTo: 29590, rate: 0.0879 },
+          { upTo: 59180, rate: 0.1495 },
+          { upTo: 93000, rate: 0.1667 },
+          { upTo: 150000, rate: 0.175 },
+          { upTo: Infinity, rate: 0.21 }
+        ],
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        surtax: null
+      },
+      NU: {
+        name: "Nunavut",
+        basicPersonalAmount: 19874,
+        creditRate: 0.04,
+        taxBrackets: [
+          { upTo: 54707, rate: 0.04 },
+          { upTo: 109413, rate: 0.07 },
+          { upTo: 177881, rate: 0.09 },
+          { upTo: 253414, rate: 0.115 },
+          { upTo: Infinity, rate: 0.12 }
+        ],
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        surtax: null
+      },
+      ON: {
+        name: "Ontario",
+        basicPersonalAmount: 12947,
+        creditRate: 0.0505,
+        taxBrackets: [
+          { upTo: 52886, rate: 0.0505 },
+          { upTo: 105775, rate: 0.0915 },
+          { upTo: 150000, rate: 0.1116 },
+          { upTo: 220000, rate: 0.1216 },
+          { upTo: Infinity, rate: 0.1316 }
+        ],
+        ageAmount: 0,
+        surtax: {
+          firstThreshold: 5710,
+          firstRate: 0.20,
+          secondThreshold: 7307,
+          secondRate: 0.36
+        },
+        taxReduction: true,
+        healthPremium: true,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759
+      },
+      PE: {
+        name: "Prince Edward Island",
+        basicPersonalAmount: 14250,
+        creditRate: 0.0965,
+        taxBrackets: [
+          { upTo: 32656, rate: 0.0965 },
+          { upTo: 64313, rate: 0.1363 },
+          { upTo: 105000, rate: 0.1665 },
+          { upTo: 140000, rate: 0.18 },
+          { upTo: Infinity, rate: 0.1875 }
+        ],
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        surtax: null
+      },
+      QC: {
+        name: "Québec",
+        basicPersonalAmount: 18571,
+        creditRate: 0.14,
+        taxBrackets: [
+          { upTo: 53355, rate: 0.14 },
+          { upTo: 106495, rate: 0.19 },
+          { upTo: 129590, rate: 0.24 },
+          { upTo: Infinity, rate: 0.2575 }
+        ],
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        federalAbatementRate: 0.165,
+        surtax: null
+      },
+      SK: {
+        name: "Saskatchewan",
+        basicPersonalAmount: 19369,
+        creditRate: 0.105,
+        taxBrackets: [
+          { upTo: 53463, rate: 0.105 },
+          { upTo: 152750, rate: 0.125 },
+          { upTo: Infinity, rate: 0.145 }
+        ],
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        surtax: null
+      },
+      YT: {
+        name: "Yukon",
+        basicPersonalAmount: 16129,
+        creditRate: 0.064,
+        taxBrackets: [
+          { upTo: 57375, rate: 0.064 },
+          { upTo: 114750, rate: 0.09 },
+          { upTo: 177882, rate: 0.109 },
+          { upTo: 500000, rate: 0.128 },
+          { upTo: Infinity, rate: 0.15 }
+        ],
+        ageAmount: 0,
+        medicalThresholdRate: 0.03,
+        medicalThresholdCap: 2759,
+        surtax: null
+      }
+    };
+
+    const ids = [
+      "province","birthDate","ageOverride","maritalStatus","maritalChangeDate","residencyStatus","immigrationDate","emigrationDate",
+      "dependants","monthsWithDependants","medicalPeriodStart","medicalPeriodEnd","isStudent","isSenior","isSelfEmployed","isDisabled",
+      "isNorthernResident","isIndigenousExempt","quebecResidentToggle","ownsHome","renter","homePurchaseDate","northernStartDate","northernEndDate",
+      "disabilityStartDate","profileNotes","employmentIncome","taxWithheldEmployment","cppContrib","eiPremiums","cpp2Contrib","commissionIncome",
+      "businessIncome","professionalIncome","farmingIncome","fishingIncome","rentalIncome","partnershipIncome","interestIncome","eligibleDividends",
+      "nonEligibleDividends","capitalGains","capitalLossesApplied","foreignIncome","pensionIncome","rrifIncome","oasIncome","cppBenefits",
+      "eiBenefits","workersComp","socialAssistance","supportReceived","respIncome","scholarships","lumpSum","otherTaxableIncome","otherNonTaxableIncome",
+      "withholdingOther","rrspContrib","prppContrib","rppContrib","fhsaDeduction","unionDues","childCareExpenses","childCareStart","childCareEnd",
+      "movingExpenses","supportPaid","carryingCharges","employmentExpenses","clergyResidence","northernDeduction","businessHomeOffice",
+      "selfEmploymentExpenses","tuitionCarryforwardApplied","tradeTools","cppEnhancementDeduction","otherDeductions","deductionNotes",
+      "spouseNetIncome","eligibleDependantAmount","caregiverAmount","disabilityAmount","dependantDisabilityTransfer","medicalExpenses",
+      "charitableDonations","tuitionAmount","studentLoanInterest","pensionIncomeAmountEligible","homeAccessibilityExpenses",
+      "firstTimeHomeBuyerEligible","adoptionExpenses","volunteerAmount","multigenRenovation","labourMobilityDeduction","provPoliticalContrib",
+      "provMedicalExpenses","provDonations","provTuitionAmount","rentPaidAnnual","propertyTaxPaid","rentStartDate","rentEndDate","ontFertilityExpenses",
+      "ontEnergyPropertyInput","ontNorthernEnergyInput","qcChildcareExpenses","qcSolidarityEstimate","bcLowIncomeExtra","abOtherCredits","otherProvCredits",
+      "provNotes","instalmentsPaid","priorYearBalancePaid","foreignTaxCredits","tuitionTransferReceived","tuitionTransferGiven",
+      "dividendTaxCreditManual","cwbAdvancePayments","benefitRepayments","otherCreditsApplied","extensionPayments","rentMonths","tuitionMonths"
+    ];
+
+    const $ = (id) => document.getElementById(id);
+
+    function num(id){
+      const el = $(id);
+      if(!el) return 0;
+      if(el.type === "checkbox") return el.checked ? 1 : 0;
+      const val = parseFloat(el.value);
+      return Number.isFinite(val) ? val : 0;
+    }
+
+    function val(id){
+      const el = $(id);
+      if(!el) return "";
+      if(el.type === "checkbox") return el.checked;
+      return el.value;
+    }
+
+    function money(n){
+      return new Intl.NumberFormat("en-CA",{style:"currency",currency:"CAD",maximumFractionDigits:2}).format(Number(n||0));
+    }
+
+    function pct(n){
+      return `${(Number(n||0)*100).toFixed(1)}%`;
+    }
+
+    function clamp(n,min,max){
+      return Math.max(min,Math.min(max,n));
+    }
+
+    function getAge(){
+      const override = num("ageOverride");
+      if(override > 0) return override;
+      const dob = val("birthDate");
+      if(!dob) return 0;
+      const d = new Date(dob+"T00:00:00");
+      const end = new Date("2025-12-31T00:00:00");
+      let age = end.getFullYear() - d.getFullYear();
+      const m = end.getMonth() - d.getMonth();
+      if(m < 0 || (m === 0 && end.getDate() < d.getDate())) age--;
+      return Math.max(age,0);
+    }
+
+    function getMonthsBetweenDates(startStr, endStr, defaultMonths=12){
+      if(!startStr || !endStr) return defaultMonths;
+      const start = new Date(startStr+"T00:00:00");
+      const end = new Date(endStr+"T00:00:00");
+      if(isNaN(start) || isNaN(end) || end < start) return 0;
+      let months = (end.getFullYear()-start.getFullYear())*12 + (end.getMonth()-start.getMonth()) + 1;
+      return clamp(months,0,12);
+    }
+
+    function calcBracketTax(income, brackets){
+      let tax = 0;
+      let prev = 0;
+      for(const b of brackets){
+        if(income <= prev) break;
+        const taxable = Math.min(income, b.upTo) - prev;
+        if(taxable > 0) tax += taxable * b.rate;
+        prev = b.upTo;
+      }
+      return tax;
+    }
+
+    function marginalRate(income, fedBrackets, provBrackets){
+      const fed = fedBrackets.find(b => income <= b.upTo)?.rate || fedBrackets[fedBrackets.length-1].rate;
+      const prov = provBrackets.find(b => income <= b.upTo)?.rate || provBrackets[provBrackets.length-1].rate;
+      return fed + prov;
+    }
+
+    function federalBPA(netIncome){
+      const p = FEDERAL.basicPersonalAmount;
+      if(netIncome <= p.phaseStart) return p.max;
+      if(netIncome >= p.phaseEnd) return p.min;
+      const ratio = (netIncome - p.phaseStart) / (p.phaseEnd - p.phaseStart);
+      return p.max - (p.max - p.min) * ratio;
+    }
+
+    function federalAgeAmount(netIncome, age){
+      if(age < FEDERAL.ageAmount.ageThreshold) return 0;
+      const reduced = FEDERAL.ageAmount.max - Math.max(0, netIncome - FEDERAL.ageAmount.incomeStart) * FEDERAL.ageAmount.reductionRate;
+      return Math.max(0, reduced);
+    }
+
+    function donationCredit(amount, lowRate, highRate, taxableIncome){
+      const first = Math.min(amount, FEDERAL.donationThreshold);
+      const rest = Math.max(0, amount - FEDERAL.donationThreshold);
+      const topRate = taxableIncome > 253414 ? Math.max(highRate,0.33) : highRate;
+      return first * lowRate + rest * topRate;
+    }
+
+    function medicalCreditBase(amount, netIncome, thresholdRate, thresholdCap){
+      const threshold = Math.min(netIncome * thresholdRate, thresholdCap);
+      return Math.max(0, amount - threshold);
+    }
+
+    function getData(){
+      const data = {};
+      ids.forEach(id => {
+        const el = $(id);
+        if(!el) return;
+        if(el.type === "checkbox") data[id] = el.checked;
+        else if(el.type === "number") data[id] = parseFloat(el.value) || 0;
+        else data[id] = el.value;
+      });
+      data.age = getAge();
+      return data;
+    }
+
+    function validate(data){
+      const warnings = [];
+      if(data.residencyStatus !== "resident") warnings.push("Part-year or non-resident status can materially change entitlement to credits and provincial calculations.");
+      if(data.province === "QC" || data.quebecResidentToggle) warnings.push("Québec residents generally file a separate provincial return; this estimator uses a practical Québec module and a federal abatement estimate.");
+      if(data.isSelfEmployed || data.businessIncome > 0 || data.professionalIncome > 0) warnings.push("Self-employment results may differ due to CPP/QPP self-employed treatment, business expense validation, instalments, and specific schedules.");
+      if(data.foreignIncome > 0 || data.foreignTaxCredits > 0) warnings.push("Foreign income and foreign tax credit calculations can require detailed country-by-country analysis and supporting schedules.");
+      if(data.capitalLossesApplied > 0) warnings.push("Capital loss use can depend on carryforward balances, net capital gains, and official schedules.");
+      if(data.supportPaid > 0 || data.supportReceived > 0) warnings.push("Support payment tax treatment depends on the nature of the order/agreement and the date it took effect.");
+      if(data.isIndigenousExempt) warnings.push("Possible Indigenous income exemption requires fact-specific analysis and is not fully modeled.");
+      if(data.medicalExpenses > 0 && (!data.medicalPeriodStart || !data.medicalPeriodEnd)) warnings.push("Medical expenses were entered without a specified 12-month period.");
+      if(data.ontFertilityExpenses > 0 && data.province !== "ON") warnings.push("Ontario fertility treatment inputs were entered, but the province selected is not Ontario.");
+      if(data.qcChildcareExpenses > 0 && data.province !== "QC") warnings.push("Québec childcare inputs were entered, but the province selected is not Québec.");
+      if(data.residencyStatus === "nonresident") warnings.push("Non-resident returns are outside the normal scope of this estimator.");
+      return warnings;
+    }
+
+    function calculate(){
+      const d = getData();
+      const prov = PROVINCES[d.province];
+      const warnings = validate(d);
+      const assumptions = [];
+      const creditsUsed = [];
+
+      const totalIncome =
+        d.employmentIncome + d.commissionIncome + d.businessIncome + d.professionalIncome + d.farmingIncome + d.fishingIncome +
+        d.rentalIncome + d.partnershipIncome + d.interestIncome + d.eligibleDividends + d.nonEligibleDividends +
+        d.capitalGains + d.foreignIncome + d.pensionIncome + d.rrifIncome + d.oasIncome + d.cppBenefits +
+        d.eiBenefits + d.workersComp + d.socialAssistance + d.supportReceived + d.respIncome + d.scholarships +
+        d.lumpSum + d.otherTaxableIncome;
+
+      const totalDeductions =
+        d.rrspContrib + d.prppContrib + d.rppContrib + d.fhsaDeduction + d.unionDues + d.childCareExpenses +
+        d.movingExpenses + d.supportPaid + d.carryingCharges + d.employmentExpenses + d.clergyResidence +
+        d.northernDeduction + d.businessHomeOffice + d.selfEmploymentExpenses + d.tuitionCarryforwardApplied +
+        d.tradeTools + d.cppEnhancementDeduction + d.otherDeductions + d.labourMobilityDeduction + d.capitalLossesApplied;
+
+      const netIncome = Math.max(0, totalIncome - totalDeductions);
+      const taxableIncome = Math.max(0, netIncome);
+      const federalBasicTax = calcBracketTax(taxableIncome, FEDERAL.taxBrackets);
+
+      const fedBPA = federalBPA(netIncome);
+      creditsUsed.push({name:"Federal basic personal amount", amount:fedBPA, value:fedBPA * FEDERAL.creditRate});
+
+      const fedAgeAmt = federalAgeAmount(netIncome, d.age);
+      if(fedAgeAmt > 0) creditsUsed.push({name:"Federal age amount", amount:fedAgeAmt, value:fedAgeAmt * FEDERAL.creditRate});
+
+      const spouseAmountRaw = (d.maritalStatus === "married" || d.maritalStatus === "commonlaw")
+        ? Math.max(0, fedBPA - d.spouseNetIncome) : 0;
+      if(spouseAmountRaw > 0) creditsUsed.push({name:"Spouse/common-law amount", amount:spouseAmountRaw, value:spouseAmountRaw * FEDERAL.creditRate});
+
+      if(d.eligibleDependantAmount > 0) creditsUsed.push({name:"Eligible dependant amount", amount:d.eligibleDependantAmount, value:d.eligibleDependantAmount * FEDERAL.creditRate});
+      if(d.caregiverAmount > 0) creditsUsed.push({name:"Canada caregiver amount", amount:d.caregiverAmount, value:d.caregiverAmount * FEDERAL.creditRate});
+
+      const disabilityAmt = d.disabilityAmount || (d.isDisabled ? FEDERAL.disabilityAmountDefault : 0);
+      if(disabilityAmt > 0) creditsUsed.push({name:"Disability amount", amount:disabilityAmt, value:disabilityAmt * FEDERAL.creditRate});
+
+      if(d.dependantDisabilityTransfer > 0) creditsUsed.push({name:"Disability transfer from dependant", amount:d.dependantDisabilityTransfer, value:d.dependantDisabilityTransfer * FEDERAL.creditRate});
+
+      const medBase = medicalCreditBase(d.medicalExpenses, netIncome, FEDERAL.medicalExpenseThresholdRate, FEDERAL.medicalExpenseThresholdCap);
+      if(medBase > 0) creditsUsed.push({name:"Medical expense credit base", amount:medBase, value:medBase * FEDERAL.creditRate});
+
+      const donationFedValue = donationCredit(d.charitableDonations, FEDERAL.donationRateLow, FEDERAL.donationRateHigh, taxableIncome);
+      if(d.charitableDonations > 0) creditsUsed.push({name:"Federal donation credit", amount:d.charitableDonations, value:donationFedValue});
+
+      if(d.tuitionAmount > 0) creditsUsed.push({name:"Tuition amount", amount:d.tuitionAmount, value:d.tuitionAmount * FEDERAL.creditRate});
+      if(d.studentLoanInterest > 0) creditsUsed.push({name:"Student loan interest", amount:d.studentLoanInterest, value:d.studentLoanInterest * FEDERAL.creditRate});
+
+      const pensionCreditBase = Math.min(FEDERAL.pensionCreditMax, d.pensionIncomeAmountEligible);
+      if(pensionCreditBase > 0) creditsUsed.push({name:"Pension income amount", amount:pensionCreditBase, value:pensionCreditBase * FEDERAL.creditRate});
+
+      const homeAccBase = Math.min(FEDERAL.homeAccessibilityLimit, d.homeAccessibilityExpenses);
+      if(homeAccBase > 0) creditsUsed.push({name:"Home accessibility expenses", amount:homeAccBase, value:homeAccBase * FEDERAL.creditRate});
+
+      const fthbBase = Math.min(FEDERAL.firstTimeHomeBuyerAmount, d.firstTimeHomeBuyerEligible);
+      if(fthbBase > 0) creditsUsed.push({name:"First-time home buyers’ amount", amount:fthbBase, value:fthbBase * FEDERAL.creditRate});
+
+      if(d.adoptionExpenses > 0) creditsUsed.push({name:"Adoption expenses", amount:d.adoptionExpenses, value:d.adoptionExpenses * FEDERAL.creditRate});
+      if(d.volunteerAmount > 0) creditsUsed.push({name:"Volunteer firefighter/search and rescue amount", amount:d.volunteerAmount, value:d.volunteerAmount * FEDERAL.creditRate});
+
+      const multigenBase = Math.min(FEDERAL.multigenRenovationLimit, d.multigenRenovation);
+      if(multigenBase > 0) creditsUsed.push({name:"Multigenerational home renovation credit", amount:multigenBase, value:multigenBase * 0.15});
+
+      const empAmountBase = Math.min(FEDERAL.employmentAmount, d.employmentIncome > 0 ? FEDERAL.employmentAmount : 0);
+      if(empAmountBase > 0) creditsUsed.push({name:"Canada employment amount", amount:empAmountBase, value:empAmountBase * FEDERAL.creditRate});
+
+      if(d.cppContrib > 0) creditsUsed.push({name:"CPP/QPP contribution credit", amount:d.cppContrib, value:d.cppContrib * FEDERAL.creditRate});
+      if(d.eiPremiums > 0) creditsUsed.push({name:"EI premiums credit", amount:d.eiPremiums, value:d.eiPremiums * FEDERAL.creditRate});
+      if(d.tuitionTransferReceived > 0) creditsUsed.push({name:"Tuition transfer received", amount:d.tuitionTransferReceived, value:d.tuitionTransferReceived * FEDERAL.creditRate});
+      if(d.foreignTaxCredits > 0) creditsUsed.push({name:"Foreign tax credit (manual input)", amount:d.foreignTaxCredits, value:d.foreignTaxCredits});
+      if(d.dividendTaxCreditManual > 0) creditsUsed.push({name:"Dividend tax credit override", amount:d.dividendTaxCreditManual, value:d.dividendTaxCreditManual});
+
+      let federalCredits = creditsUsed.reduce((sum,x)=>sum+x.value,0);
+
+      let federalAbatement = 0;
+      if(d.province === "QC"){
+        federalAbatement = federalBasicTax * (prov.federalAbatementRate || 0);
+        assumptions.push("Québec federal abatement estimated as 16.5% of basic federal tax before final net federal tax adjustments.");
+      }
+
+      let netFederalTax = Math.max(0, federalBasicTax - federalCredits - federalAbatement);
+
+      const provBasicTax = calcBracketTax(taxableIncome, prov.taxBrackets);
+
+      const provincialCredits = [];
+      provincialCredits.push({
+        name:`${prov.name} basic personal amount`,
+        amount:prov.basicPersonalAmount,
+        value:prov.basicPersonalAmount * prov.creditRate
+      });
+
+      if(d.provMedicalExpenses > 0){
+        const base = medicalCreditBase(d.provMedicalExpenses, netIncome, prov.medicalThresholdRate, prov.medicalThresholdCap);
+        provincialCredits.push({name:`${prov.name} medical expense credit`, amount:base, value:base * prov.creditRate});
+      }
+
+      if(d.provDonations > 0){
+        provincialCredits.push({
+          name:`${prov.name} donations credit`,
+          amount:d.provDonations,
+          value:donationCredit(d.provDonations, prov.creditRate, Math.max(prov.creditRate, 0.11), taxableIncome)
+        });
+      }
+
+      if(d.provTuitionAmount > 0){
+        provincialCredits.push({name:`${prov.name} tuition amount`, amount:d.provTuitionAmount, value:d.provTuitionAmount * prov.creditRate});
+      }
+
+      if(d.provPoliticalContrib > 0){
+        let politicalValue = 0;
+        if(d.province === "ON"){
+          const a = d.provPoliticalContrib;
+          politicalValue =
+            Math.min(a, 445)*0.75 +
+            Math.min(Math.max(a-445,0), 690)*0.5 +
+            Math.min(Math.max(a-1135,0), 1126)*0.3333;
+        } else {
+          politicalValue = d.provPoliticalContrib * 0.25;
+        }
+        provincialCredits.push({name:`${prov.name} political contribution credit`, amount:d.provPoliticalContrib, value:politicalValue});
+      }
+
+      if(d.province === "ON" && d.ontFertilityExpenses > 0){
+        provincialCredits.push({
+          name:"Ontario fertility treatment tax credit",
+          amount:Math.min(20000, d.ontFertilityExpenses),
+          value:Math.min(20000, d.ontFertilityExpenses) * 0.25
+        });
+      }
+
+      if(d.province === "ON" && d.ontEnergyPropertyInput > 0){
+        provincialCredits.push({
+          name:"Ontario energy/property tax estimate",
+          amount:d.ontEnergyPropertyInput,
+          value:Math.min(1500, d.ontEnergyPropertyInput * 0.10)
+        });
+        assumptions.push("Ontario energy/property tax amount is estimated through a simplified screening value, not a full benefit entitlement calculation.");
+      }
+
+      if(d.province === "ON" && d.ontNorthernEnergyInput > 0){
+        provincialCredits.push({
+          name:"Northern Ontario energy credit estimate",
+          amount:d.ontNorthernEnergyInput,
+          value:Math.min(180, d.ontNorthernEnergyInput * 0.10)
+        });
+        assumptions.push("Northern Ontario energy credit is simplified and should be verified against final benefit rules.");
+      }
+
+      if(d.province === "QC" && d.qcChildcareExpenses > 0){
+        provincialCredits.push({
+          name:"Québec childcare expense estimate",
+          amount:d.qcChildcareExpenses,
+          value:Math.min(d.qcChildcareExpenses * 0.60, d.qcChildcareExpenses)
+        });
+        assumptions.push("Québec childcare expense credit is approximated and actual rates vary with family income and detailed Revenu Québec schedules.");
+      }
+
+      if(d.province === "QC" && d.qcSolidarityEstimate > 0){
+        provincialCredits.push({
+          name:"Québec solidarity/family estimate input",
+          amount:d.qcSolidarityEstimate,
+          value:d.qcSolidarityEstimate
+        });
+        assumptions.push("Québec solidarity and family-related provincial benefits are treated as manual estimate inputs in this tool.");
+      }
+
+      if(d.province === "BC"){
+        const bcReduction = Math.max(0, (prov.lowIncomeReduction?.max || 0) - Math.max(0, taxableIncome - 25000) * 0.02 + d.bcLowIncomeExtra);
+        if(bcReduction > 0){
+          provincialCredits.push({name:"BC low-income tax reduction estimate", amount:bcReduction, value:bcReduction});
+          assumptions.push("BC low-income reduction is simplified for estimator purposes.");
+        }
+      }
+
+      if(d.province === "AB" && d.abOtherCredits > 0){
+        provincialCredits.push({name:"Alberta other credits input", amount:d.abOtherCredits, value:d.abOtherCredits});
+      }
+
+      if(d.otherProvCredits > 0){
+        provincialCredits.push({name:"Other province-specific credits input", amount:d.otherProvCredits, value:d.otherProvCredits});
+      }
+
+      let provCreditsTotal = provincialCredits.reduce((s,x)=>s+x.value,0);
+      let provNetBeforeSurtax = Math.max(0, provBasicTax - provCreditsTotal);
+      let surtax = 0;
+      let healthPremium = 0;
+      let provReduction = 0;
+
+      if(d.province === "ON"){
+        const st = prov.surtax;
+        if(provNetBeforeSurtax > st.firstThreshold) surtax += (provNetBeforeSurtax - st.firstThreshold) * st.firstRate;
+        if(provNetBeforeSurtax > st.secondThreshold) surtax += (provNetBeforeSurtax - st.secondThreshold) * st.secondRate;
+        if(taxableIncome <= 20000) healthPremium = 0;
+        else if(taxableIncome <= 36000) healthPremium = Math.min(300, 0.06 * (taxableIncome - 20000));
+        else if(taxableIncome <= 48000) healthPremium = Math.min(450, 300 + 0.06 * (taxableIncome - 36000));
+        else if(taxableIncome <= 72000) healthPremium = Math.min(600, 450 + 0.25 * (taxableIncome - 48000));
+        else if(taxableIncome <= 200000) healthPremium = Math.min(750, 600 + 0.25 * (taxableIncome - 72000));
+        else healthPremium = Math.min(900, 750 + 0.25 * (taxableIncome - 200000));
+
+        const baseRed = 286;
+        const depAdd = d.dependants * 529;
+        const reductionMax = baseRed + depAdd;
+        provReduction = Math.max(0, reductionMax - Math.max(0, taxableIncome - 18000) * 0.04);
+        assumptions.push("Ontario tax reduction is estimated using a simplified low-income formula for taxpayer and dependant count.");
+      }
+
+      let netProvTax = Math.max(0, provNetBeforeSurtax + surtax + healthPremium - provReduction);
+
+      let refundableCredits = 0;
+      const refundableItems = [];
+
+      const workingIncome = d.employmentIncome + d.commissionIncome + d.businessIncome + d.professionalIncome + d.farmingIncome + d.fishingIncome;
+      if(workingIncome > 3000 && taxableIncome < 35000){
+        const cwb = Math.max(0, Math.min(1600, (workingIncome - 3000) * 0.15) - Math.max(0, taxableIncome - 23000) * 0.12);
+        if(cwb > 0){
+          refundableCredits += cwb;
+          refundableItems.push({name:"Canada workers benefit estimate", value:cwb});
+          assumptions.push("Canada Workers Benefit is estimated with a simplified formula and should be verified for family composition and province-specific parameters.");
+        }
+      }
+
+      if(d.province === "ON" && d.ontFertilityExpenses > 0){
+        refundableItems.push({name:"Ontario fertility treatment tax credit", value:Math.min(20000, d.ontFertilityExpenses) * 0.25});
+      }
+
+      const totalWithholding =
+        d.taxWithheldEmployment + d.withholdingOther + d.instalmentsPaid + d.priorYearBalancePaid +
+        d.extensionPayments + refundableCredits + d.otherCreditsApplied;
+
+      const totalTaxPayable = Math.max(0, netFederalTax + netProvTax + d.benefitRepayments - d.foreignTaxCredits - d.dividendTaxCreditManual);
+      const refundOrBalance = totalWithholding - totalTaxPayable - d.cwbAdvancePayments;
+      const effectiveRate = totalIncome > 0 ? totalTaxPayable / totalIncome : 0;
+      const mRate = marginalRate(taxableIncome, FEDERAL.taxBrackets, prov.taxBrackets);
+
+      if(d.province === "QC") assumptions.push("Québec provincial calculations, credits, and contributions are materially more detailed in official filing software than in this estimator.");
+      if(d.residencyStatus === "partyear") assumptions.push("Part-year residency is flagged for review; credits and thresholds may need proration or special treatment.");
+      if(d.isNorthernResident) assumptions.push("Northern resident deduction and related territorial/northern rules depend on location, zone type, and qualifying days.");
+      if(d.rentPaidAnnual > 0 || d.propertyTaxPaid > 0) assumptions.push("Rent and property tax fields are primarily used for province-specific credit screening and simplified estimates, not full benefits adjudication.");
+      if(d.homePurchaseDate) assumptions.push("Home purchase date is recorded for first-time buyer and housing-related review items, but legal qualification must be confirmed separately.");
+
+      return {
+        data: d,
+        province: prov,
+        totalIncome,
+        totalDeductions,
+        netIncome,
+        taxableIncome,
+        federalBasicTax,
+        federalCredits,
+        federalAbatement,
+        netFederalTax,
+        provBasicTax,
+        provCreditsTotal,
+        surtax,
+        healthPremium,
+        provReduction,
+        netProvTax,
+        refundableCredits,
+        refundableItems,
+        totalWithholding,
+        totalTaxPayable,
+        refundOrBalance,
+        effectiveRate,
+        marginalRate: mRate,
+        creditsUsed,
+        provincialCredits,
+        assumptions,
+        warnings
+      };
+    }
+
+    function renderTable(rows){
+      if(!rows.length) return "<p class='small'>No items to display.</p>";
+      return `
+        <table>
+          <thead>
+            <tr><th>Item</th><th>Amount</th><th>Value</th></tr>
+          </thead>
+          <tbody>
+            ${rows.map(r=>`
+              <tr>
+                <td>${r.name}</td>
+                <td>${r.amount !== undefined ? money(r.amount) : "—"}</td>
+                <td>${r.value !== undefined ? money(r.value) : "—"}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function renderResults(r){
+      const isRefund = r.refundOrBalance >= 0;
+      const big = $("bigResult");
+      big.classList.remove("refund","owing");
+      big.classList.add(isRefund ? "refund" : "owing");
+      $("resultLabel").textContent = isRefund ? "Refund" : "Balance owing";
+      $("resultAmount").textContent = money(Math.abs(r.refundOrBalance));
+      $("resultExplanation").textContent = `${r.province.name} resident estimate for 2025 with ${r.assumptions.length} assumptions and ${r.warnings.length} review warning(s).`;
+
+      $("miniTotalIncome").textContent = money(r.totalIncome);
+      $("miniTaxableIncome").textContent = money(r.taxableIncome);
+      $("miniFederalTax").textContent = money(r.netFederalTax);
+      $("miniProvTax").textContent = money(r.netProvTax);
+      $("miniEffectiveRate").textContent = pct(r.effectiveRate);
+      $("miniMarginalRate").textContent = pct(r.marginalRate);
+      $("miniCredits").textContent = money(r.federalCredits + r.provCreditsTotal + r.refundableCredits + r.federalAbatement + r.provReduction);
+      $("miniWarnings").textContent = String(r.warnings.length);
+
+      $("summaryTableWrap").innerHTML = `
+        <table>
+          <tbody>
+            <tr><td>Province / territory</td><td>${r.province.name}</td></tr>
+            <tr><td>Total income</td><td>${money(r.totalIncome)}</td></tr>
+            <tr><td>Total deductions</td><td>${money(r.totalDeductions)}</td></tr>
+            <tr><td>Net income</td><td>${money(r.netIncome)}</td></tr>
+            <tr><td>Taxable income</td><td>${money(r.taxableIncome)}</td></tr>
+            <tr><td>Total tax payable</td><td>${money(r.totalTaxPayable)}</td></tr>
+            <tr><td>Total withholding and payments</td><td>${money(r.totalWithholding)}</td></tr>
+            <tr><td>${r.refundOrBalance >= 0 ? "Estimated refund" : "Estimated balance owing"}</td><td>${money(Math.abs(r.refundOrBalance))}</td></tr>
+            <tr><td>Effective tax rate</td><td>${pct(r.effectiveRate)}</td></tr>
+            <tr><td>Marginal tax rate estimate</td><td>${pct(r.marginalRate)}</td></tr>
+          </tbody>
+        </table>
+      `;
+
+      $("federalTableWrap").innerHTML = `
+        <table>
+          <tbody>
+            <tr><td>Federal basic tax</td><td>${money(r.federalBasicTax)}</td></tr>
+            <tr><td>Federal credits</td><td>${money(r.federalCredits)}</td></tr>
+            <tr><td>Québec federal abatement</td><td>${money(r.federalAbatement)}</td></tr>
+            <tr><td>Net federal tax</td><td>${money(r.netFederalTax)}</td></tr>
+          </tbody>
+        </table>
+        ${renderTable(r.creditsUsed)}
+      `;
+
+      $("provincialTableWrap").innerHTML = `
+        <table>
+          <tbody>
+            <tr><td>${r.province.name} basic tax</td><td>${money(r.provBasicTax)}</td></tr>
+            <tr><td>${r.province.name} credits</td><td>${money(r.provCreditsTotal)}</td></tr>
+            <tr><td>Surtax</td><td>${money(r.surtax)}</td></tr>
+            <tr><td>Health premium / similar levy</td><td>${money(r.healthPremium)}</td></tr>
+            <tr><td>Provincial tax reduction</td><td>${money(r.provReduction)}</td></tr>
+            <tr><td>Net provincial / territorial tax</td><td>${money(r.netProvTax)}</td></tr>
+          </tbody>
+        </table>
+        ${renderTable(r.provincialCredits)}
+      `;
+
+      $("creditsTableWrap").innerHTML = `
+        <table>
+          <tbody>
+            <tr><td>Federal credits used</td><td>${money(r.federalCredits)}</td></tr>
+            <tr><td>Provincial credits used</td><td>${money(r.provCreditsTotal)}</td></tr>
+            <tr><td>Refundable credits</td><td>${money(r.refundableCredits)}</td></tr>
+          </tbody>
+        </table>
+        ${renderTable(r.refundableItems.map(x=>({name:x.name, amount:x.value, value:x.value})))}
+      `;
+
+      $("paymentsTableWrap").innerHTML = `
+        <table>
+          <tbody>
+            <tr><td>Employment tax withheld</td><td>${money(r.data.taxWithheldEmployment)}</td></tr>
+            <tr><td>Other withholding</td><td>${money(r.data.withholdingOther)}</td></tr>
+            <tr><td>Instalments paid</td><td>${money(r.data.instalmentsPaid)}</td></tr>
+            <tr><td>Extension payments</td><td>${money(r.data.extensionPayments)}</td></tr>
+            <tr><td>Other credits/payments applied</td><td>${money(r.data.otherCreditsApplied)}</td></tr>
+            <tr><td>Refundable credits included</td><td>${money(r.refundableCredits)}</td></tr>
+            <tr><td>Total withholding and payments</td><td>${money(r.totalWithholding)}</td></tr>
+          </tbody>
+        </table>
+      `;
+
+      const allFlags = [
+        ...r.assumptions.map(x=>({text:x,type:"warn"})),
+        ...r.warnings.map(x=>({text:x,type:"bad"}))
+      ];
+      $("flagsWrap").innerHTML = allFlags.length
+        ? allFlags.map(f=>`<div class="alert ${f.type === "bad" ? "error" : "warn"}">${f.text}</div>`).join("")
+        : `<div class="alert info">No major review flags detected from the current input set.</div>`;
+    }
+
+    function updateProvinceHint(){
+      const p = PROVINCES[val("province")];
+      let text = `${p.name} selected. This module applies ${p.name} tax brackets, a basic personal amount, and a representative set of province-specific credit and reduction logic.`;
+      if(val("province")==="ON"){
+        text += " Ontario-specific handling includes surtax, a simplified tax reduction, Ontario health premium, and a fertility treatment credit input.";
+      }
+      if(val("province")==="QC"){
+        text += " Québec-specific handling includes separate provincial tax brackets, a federal abatement estimate, and manual/estimated fields for certain Revenu Québec-driven credits.";
+      }
+      if(val("province")==="AB"){
+        text += " Alberta includes the 2025 8% first bracket.";
+      }
+      if(val("province")==="BC"){
+        text += " British Columbia includes a simplified low-income reduction estimate.";
+      }
+      $("provinceHint").textContent = text;
+      $("quebecResidentToggle").checked = val("province")==="QC";
+    }
+
+    function saveScenario(){
+      const data = getData();
+      localStorage.setItem("canadaTaxEstimator2025", JSON.stringify(data));
+      alert("Scenario saved locally in this browser.");
+    }
+
+    function loadScenario(){
+      const raw = localStorage.getItem("canadaTaxEstimator2025");
+      if(!raw){
+        alert("No saved scenario found.");
+        return;
+      }
+      const data = JSON.parse(raw);
+      ids.forEach(id=>{
+        const el = $(id);
+        if(!el || !(id in data)) return;
+        if(el.type === "checkbox") el.checked = !!data[id];
+        else el.value = data[id];
+      });
+      updateProvinceHint();
+      run();
+    }
+
+    function resetScenario(){
+      if(!confirm("Reset all fields to default values?")) return;
+      window.location.reload();
+    }
+
+    function sampleScenario(type){
+      const presets = {
+        single: {
+          province:"ON", employmentIncome:70000, taxWithheldEmployment:12000, cppContrib:3800, eiPremiums:1050, rrspContrib:3000,
+          maritalStatus:"single", dependants:0, medicalExpenses:0, charitableDonations:200, tuitionAmount:0, rentPaidAnnual:18000, renter:true
+        },
+        family: {
+          province:"ON", employmentIncome:95000, taxWithheldEmployment:18000, cppContrib:4050, eiPremiums:1050, rrspContrib:5000,
+          maritalStatus:"married", spouseNetIncome:25000, dependants:2, monthsWithDependants:12, childCareExpenses:8000, medicalExpenses:1200, charitableDonations:500
+        },
+        ontarioRenter: {
+          province:"ON", employmentIncome:55000, taxWithheldEmployment:8500, rrspContrib:1000, rentPaidAnnual:21000, renter:true,
+          ontEnergyPropertyInput:21000, ontNorthernEnergyInput:0, dependants:0
+        },
+        quebecWorker: {
+          province:"QC", employmentIncome:80000, taxWithheldEmployment:14000, cppContrib:0, eiPremiums:900, rrspContrib:4000,
+          quebecResidentToggle:true, qcChildcareExpenses:0, qcSolidarityEstimate:0, maritalStatus:"single"
+        },
+        selfEmployed: {
+          province:"AB", employmentIncome:0, businessIncome:95000, selfEmploymentExpenses:18000, taxWithheldEmployment:0,
+          instalmentsPaid:9000, rrspContrib:8000, isSelfEmployed:true
+        },
+        senior: {
+          province:"BC", employmentIncome:0, pensionIncome:26000, rrifIncome:15000, cppBenefits:9000, oasIncome:8500,
+          taxWithheldEmployment:3500, isSenior:true, birthDate:"1950-06-01", medicalExpenses:3000
+        }
+      };
+      const p = presets[type];
+      if(!p) return;
+      Object.entries(p).forEach(([k,v])=>{
+        const el = $(k);
+        if(!el) return;
+        if(el.type === "checkbox") el.checked = !!v;
+        else el.value = v;
+      });
+      updateProvinceHint();
+      run();
+    }
+
+    function addSampleButtons(){
+      const host = document.querySelector("#profile .toolbar");
+      [
+        ["Sample: single","single"],
+        ["Sample: family","family"],
+        ["Sample: ON renter","ontarioRenter"],
+        ["Sample: Québec worker","quebecWorker"],
+        ["Sample: self-employed","selfEmployed"],
+        ["Sample: senior","senior"]
+      ].forEach(([label,key])=>{
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "secondary";
+        b.textContent = label;
+        b.addEventListener("click",()=>sampleScenario(key));
+        host.appendChild(b);
+      });
+    }
+
+    function run(){
+      updateProvinceHint();
+      const result = calculate();
+      renderResults(result);
+    }
+
+    document.querySelectorAll(".nav-btn").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        document.querySelectorAll(".nav-btn").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        const target = $(btn.dataset.target);
+        if(target) target.scrollIntoView({behavior:"smooth", block:"start"});
+      });
+    });
+
+    ids.forEach(id=>{
+      const el = $(id);
+      if(!el) return;
+      el.addEventListener("input", run);
+      el.addEventListener("change", run);
+    });
+
+    $("saveBtn").addEventListener("click", saveScenario);
+    $("loadBtn").addEventListener("click", loadScenario);
+    $("resetBtn").addEventListener("click", resetScenario);
+    $("recalcBtn").addEventListener("click", run);
+    addSampleButtons();
+    updateProvinceHint();
+    run();
+  </script>
+</body>
+</html>
