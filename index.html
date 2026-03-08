@@ -364,13 +364,13 @@
       <p>Estimate 2025 federal and provincial/territorial personal income tax, source deductions, credits, and whether you are due a refund or owe a balance.</p>
       <div class="hero-grid">
         <div class="banner-note">
-          <strong>Important:</strong> This is an estimator, not tax advice or certified filing software. It is designed around a practical 2025 rule engine with transparent assumptions, review flags, and detailed data entry. Specialized schedules, rare elections, and some province-specific refundable credits remain partially modeled and should be verified against CRA and Revenu Québec guidance.
+          <strong>Important:</strong> This is an estimator, not tax advice or certified filing software. It is designed around a practical 2025 rule engine with transparent assumptions, review flags, detailed data entry, and a tax-slip wizard. Specialized schedules, elections, and some provincial/Québec credits remain partially modeled.
         </div>
         <div class="banner-note">
           <div><strong>Tax year:</strong> 2025</div>
           <div><strong>Mode:</strong> Personal income estimate</div>
           <div><strong>Québec:</strong> Separate provincial logic and federal abatement estimate included</div>
-          <div><strong>Data status:</strong> Configurable rule objects for all provinces/territories</div>
+          <div><strong>Slips:</strong> T4, RL‑1, T4A, T4E, T4A(P), T4A(OAS), T5, RL‑3, T3, T5007, T5008, T5013</div>
         </div>
       </div>
     </section>
@@ -380,6 +380,7 @@
         <h2>Sections</h2>
         <div class="nav-list" id="navList">
           <button class="nav-btn active" data-target="profile">Tax profile</button>
+          <button class="nav-btn" data-target="slips">Tax slips</button>
           <button class="nav-btn" data-target="income">Income</button>
           <button class="nav-btn" data-target="deductions">Deductions</button>
           <button class="nav-btn" data-target="federal">Federal credits</button>
@@ -527,22 +528,177 @@
           </div>
         </section>
 
+        <!-- Tax slips wizard -->
+        <section id="slips" class="panel card">
+          <div class="section-actions">
+            <div>
+              <h2>Tax slips wizard</h2>
+              <div class="sub">
+                Answer a few questions and then enter amounts directly from your slips (T4, RL‑1, T4A, T4E, T4A(P), T4A(OAS), T5, RL‑3, T3, T5007, T5008, T5013, etc.).
+              </div>
+            </div>
+          </div>
+
+          <details open>
+            <summary>Step 1 – What income did you receive?</summary>
+            <div class="grid" style="margin-top:10px">
+              <div class="toggle col-3"><label><input id="qEmployment" type="checkbox" /> Employment income from an employer (T4, RL‑1 in Québec)</label></div>
+              <div class="toggle col-3"><label><input id="qSelfEmployment" type="checkbox" /> Self-employment / business / professional income (T2125, no standard T4)</label></div>
+              <div class="toggle col-3"><label><input id="qEI" type="checkbox" /> Employment Insurance (T4E)</label></div>
+              <div class="toggle col-3"><label><input id="qPension" type="checkbox" /> Pension, RRIF, annuity, CPP/QPP, OAS (T4A family)</label></div>
+              <div class="toggle col-3"><label><input id="qInvestments" type="checkbox" /> Interest / dividends / investments (T5, RL‑3, T3, T5008)</label></div>
+              <div class="toggle col-3"><label><input id="qBenefits" type="checkbox" /> Social assistance / workers’ compensation (T5007)</label></div>
+              <div class="toggle col-3"><label><input id="qPartnership" type="checkbox" /> Partnership income (T5013)</label></div>
+              <div class="toggle col-3"><label><input id="qOtherSlips" type="checkbox" /> Other specialized slips or grants</label></div>
+            </div>
+            <div class="alert info" style="margin-top:10px">
+              Based on your selections (and province), the relevant slip input panels below will appear. You can still override in the Income section.
+            </div>
+          </details>
+
+          <details id="slipPanelT4" class="slip-panel hidden" data-slip="T4">
+            <summary>T4 – Statement of Remuneration Paid</summary>
+            <div class="small">
+              Copy amounts exactly from your T4. Key boxes: 14 (employment income), 16 (CPP/QPP contributions), 18 (EI premiums), 20 (RPP contributions), 22 (income tax deducted), 40 (taxable benefits). [web:83][web:91]
+            </div>
+            <div class="grid" style="margin-top:10px">
+              <div class="field col-3"><label for="t4Box14">Box 14 – Employment income</label><input id="t4Box14" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t4Box22">Box 22 – Income tax deducted</label><input id="t4Box22" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t4Box16">Box 16 – CPP contributions</label><input id="t4Box16" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t4Box18">Box 18 – EI premiums</label><input id="t4Box18" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t4Box20">Box 20 – RPP contributions</label><input id="t4Box20" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t4Box40">Box 40 – Taxable benefits</label><input id="t4Box40" type="number" min="0" step="0.01" /></div>
+            </div>
+          </details>
+
+          <details id="slipPanelRL1" class="slip-panel hidden" data-slip="RL1">
+            <summary>RL‑1 – Employment and other income (Québec)</summary>
+            <div class="small">
+              For Québec employment income. Common boxes: A (employment income), B (QPP), C (EI), D (QPIP), E (Québec income tax). [web:86][web:92]
+            </div>
+            <div class="grid" style="margin-top:10px">
+              <div class="field col-3"><label for="rl1BoxA">Box A – Employment income</label><input id="rl1BoxA" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="rl1BoxE">Box E – Québec income tax withheld</label><input id="rl1BoxE" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="rl1BoxB">Box B – QPP contributions</label><input id="rl1BoxB" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="rl1BoxC">Box C – EI premiums</label><input id="rl1BoxC" type="number" min="0" step="0.01" /></div>
+            </div>
+          </details>
+
+          <details id="slipPanelT4A" class="slip-panel hidden" data-slip="T4A">
+            <summary>T4A / T4A(P) / T4A(OAS) – Pension, retirement, CPP/QPP, OAS</summary>
+            <div class="small">
+              Use for pension income, RRIF, annuities, CPP/QPP benefits, Old Age Security. [web:76][web:79][web:84]
+            </div>
+            <div class="grid" style="margin-top:10px">
+              <div class="field col-3"><label for="t4aBox16">T4A box 16 – Pension or retirement</label><input id="t4aBox16" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t4aBox22Tax">T4A box 22 – Tax deducted</label><input id="t4aBox22Tax" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t4apCPP">T4A(P) – CPP/QPP benefits (box 20)</label><input id="t4apCPP" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t4oasOAS">T4A(OAS) – OAS payments (box 18)</label><input id="t4oasOAS" type="number" min="0" step="0.01" /></div>
+            </div>
+          </details>
+
+          <details id="slipPanelT4E" class="slip-panel hidden" data-slip="T4E">
+            <summary>T4E – Employment Insurance and other benefits</summary>
+            <div class="small">
+              T4E box 14 usually shows total EI benefits; box 22 shows income tax deducted. [web:84]
+            </div>
+            <div class="grid" style="margin-top:10px">
+              <div class="field col-3"><label for="t4eBox14">Box 14 – Total benefits</label><input id="t4eBox14" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t4eBox22">Box 22 – Income tax deducted</label><input id="t4eBox22" type="number" min="0" step="0.01" /></div>
+            </div>
+          </details>
+
+          <details id="slipPanelT5" class="slip-panel hidden" data-slip="T5">
+            <summary>T5 – Statement of Investment Income</summary>
+            <div class="small">
+              Common boxes: 13 (interest), 24 (eligible dividends), 25 (other than eligible dividends), 22 (tax deducted). [web:65][web:56][web:84]
+            </div>
+            <div class="grid" style="margin-top:10px">
+              <div class="field col-3"><label for="t5Box13">Box 13 – Interest and other investment income</label><input id="t5Box13" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t5Box24">Box 24 – Eligible dividends</label><input id="t5Box24" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t5Box25">Box 25 – Non-eligible dividends</label><input id="t5Box25" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t5Box22Tax">Box 22 – Income tax deducted</label><input id="t5Box22Tax" type="number" min="0" step="0.01" /></div>
+            </div>
+          </details>
+
+          <details id="slipPanelRL3" class="slip-panel hidden" data-slip="RL3">
+            <summary>RL‑3 – Investment income (Québec)</summary>
+            <div class="small">
+              Use with T5 for Québec investment income; boxes cover interest, dividends and provincial tax withheld. [web:60]
+            </div>
+            <div class="grid" style="margin-top:10px">
+              <div class="field col-3"><label for="rl3Interest">Interest (RL‑3 interest box)</label><input id="rl3Interest" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="rl3Dividends">Dividends (RL‑3 dividend box)</label><input id="rl3Dividends" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="rl3TaxWithheld">Québec tax withheld on investment income</label><input id="rl3TaxWithheld" type="number" min="0" step="0.01" /></div>
+            </div>
+          </details>
+
+          <details id="slipPanelT3" class="slip-panel hidden" data-slip="T3">
+            <summary>T3 – Statement of Trust Income</summary>
+            <div class="small">
+              Trust income allocations (interest, dividends, capital gains, etc.). [web:70][web:78]
+            </div>
+            <div class="grid" style="margin-top:10px">
+              <div class="field col-3"><label for="t3Interest">T3 – Interest / other income</label><input id="t3Interest" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t3Dividends">T3 – Dividends</label><input id="t3Dividends" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t3CapGains">T3 – Capital gains</label><input id="t3CapGains" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t3TaxWithheld">T3 – Tax withheld</label><input id="t3TaxWithheld" type="number" min="0" step="0.01" /></div>
+            </div>
+          </details>
+
+          <details id="slipPanelT5007" class="slip-panel hidden" data-slip="T5007">
+            <summary>T5007 – Statement of Benefits</summary>
+            <div class="small">
+              Reports social assistance and workers’ compensation benefits which may enter net income and special lines. [web:83][web:81]
+            </div>
+            <div class="grid" style="margin-top:10px">
+              <div class="field col-3"><label for="t5007Box11">Box 11 – Benefits</label><input id="t5007Box11" type="number" min="0" step="0.01" /></div>
+            </div>
+          </details>
+
+          <details id="slipPanelT5008" class="slip-panel hidden" data-slip="T5008">
+            <summary>T5008 – Securities transactions</summary>
+            <div class="small">
+              Use to determine proceeds and gains for capital gains reporting; you must also supply your adjusted cost base (ACB). [web:84]
+            </div>
+            <div class="grid" style="margin-top:10px">
+              <div class="field col-3"><label for="t5008Box21">Box 21 – Proceeds of disposition</label><input id="t5008Box21" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t5008ACB">Adjusted cost base (manual)</label><input id="t5008ACB" type="number" min="0" step="0.01" /></div>
+            </div>
+          </details>
+
+          <details id="slipPanelT5013" class="slip-panel hidden" data-slip="T5013">
+            <summary>T5013 – Partnership income</summary>
+            <div class="small">
+              Limited partnership or other partnership allocations that flow into business and capital income. [web:84][web:81]
+            </div>
+            <div class="grid" style="margin-top:10px">
+              <div class="field col-3"><label for="t5013BusIncome">Business/partnership income</label><input id="t5013BusIncome" type="number" min="0" step="0.01" /></div>
+              <div class="field col-3"><label for="t5013CapGains">Capital gains from partnership</label><input id="t5013CapGains" type="number" min="0" step="0.01" /></div>
+            </div>
+          </details>
+
+          <div class="alert warn" style="margin-top:10px">
+            The slip wizard is for convenience only. Underlying mappings are approximate and may group some boxes together; always rely on actual slips and official CRA / Revenu Québec instructions when filing.
+          </div>
+        </section>
+
         <section id="income" class="panel card">
           <h2>Income</h2>
-          <div class="sub">Enter income amounts in Canadian dollars. Use net amounts where a line explicitly says net.</div>
+          <div class="sub">Enter income amounts in Canadian dollars. Slip wizard entries automatically feed into these totals; you can override or add extra amounts here.</div>
           <div class="grid">
-            <div class="field col-3"><label for="employmentIncome">Employment income (T4)</label><input id="employmentIncome" type="number" min="0" step="0.01" value="70000" /></div>
+            <div class="field col-3"><label for="employmentIncome">Employment income (T4 / RL‑1 / other)</label><input id="employmentIncome" type="number" min="0" step="0.01" value="70000" /></div>
             <div class="field col-3"><label for="taxWithheldEmployment">Tax withheld on employment income</label><input id="taxWithheldEmployment" type="number" min="0" step="0.01" value="12000" /></div>
-            <div class="field col-3"><label for="cppContrib">CPP contributions</label><input id="cppContrib" type="number" min="0" step="0.01" value="3800" /></div>
+            <div class="field col-3"><label for="cppContrib">CPP/QPP contributions</label><input id="cppContrib" type="number" min="0" step="0.01" value="3800" /></div>
             <div class="field col-3"><label for="eiPremiums">EI premiums</label><input id="eiPremiums" type="number" min="0" step="0.01" value="1050" /></div>
 
             <div class="field col-3"><label for="cpp2Contrib">CPP2 / additional CPP</label><input id="cpp2Contrib" type="number" min="0" step="0.01" value="0" /></div>
             <div class="field col-3"><label for="commissionIncome">Commission income</label><input id="commissionIncome" type="number" min="0" step="0.01" value="0" /></div>
-            <div class="field col-3"><label for="businessIncome">Self-employment business income</label><input id="businessIncome" type="number" min="0" step="0.01" value="0" /></div>
-            <div class="field col-3"><label for="professionalIncome">Professional income</label><input id="professionalIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="businessIncome">Self-employment business income</label><input id="businessIncome" type="number" min="-9999999" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="professionalIncome">Professional income</label><input id="professionalIncome" type="number" min="-9999999" step="0.01" value="0" /></div>
 
-            <div class="field col-3"><label for="farmingIncome">Farming income</label><input id="farmingIncome" type="number" min="0" step="0.01" value="0" /></div>
-            <div class="field col-3"><label for="fishingIncome">Fishing income</label><input id="fishingIncome" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="farmingIncome">Farming income</label><input id="farmingIncome" type="number" min="-9999999" step="0.01" value="0" /></div>
+            <div class="field col-3"><label for="fishingIncome">Fishing income</label><input id="fishingIncome" type="number" min="-9999999" step="0.01" value="0" /></div>
             <div class="field col-3"><label for="rentalIncome">Rental income (net)</label><input id="rentalIncome" type="number" min="-9999999" step="0.01" value="0" /></div>
             <div class="field col-3"><label for="partnershipIncome">Partnership income (net)</label><input id="partnershipIncome" type="number" min="-9999999" step="0.01" value="0" /></div>
 
@@ -800,7 +956,7 @@
           <div class="badge">Federal BPA: income-tested</div>
           <div class="badge">Ontario health premium modeled</div>
           <div class="badge">Québec abatement estimated</div>
-          <div class="badge">All provinces/territories supported</div>
+          <div class="badge">Slip wizard enabled</div>
         </div>
       </aside>
     </div>
@@ -1069,7 +1225,18 @@
       "provMedicalExpenses","provDonations","provTuitionAmount","rentPaidAnnual","propertyTaxPaid","rentStartDate","rentEndDate","ontFertilityExpenses",
       "ontEnergyPropertyInput","ontNorthernEnergyInput","qcChildcareExpenses","qcSolidarityEstimate","bcLowIncomeExtra","abOtherCredits","otherProvCredits",
       "provNotes","instalmentsPaid","priorYearBalancePaid","foreignTaxCredits","tuitionTransferReceived","tuitionTransferGiven",
-      "dividendTaxCreditManual","cwbAdvancePayments","benefitRepayments","otherCreditsApplied","extensionPayments","rentMonths","tuitionMonths"
+      "dividendTaxCreditManual","cwbAdvancePayments","benefitRepayments","otherCreditsApplied","extensionPayments","rentMonths","tuitionMonths",
+      "qEmployment","qSelfEmployment","qEI","qPension","qInvestments","qBenefits","qPartnership","qOtherSlips",
+      "t4Box14","t4Box22","t4Box16","t4Box18","t4Box20","t4Box40",
+      "rl1BoxA","rl1BoxE","rl1BoxB","rl1BoxC",
+      "t4aBox16","t4aBox22Tax","t4apCPP","t4oasOAS",
+      "t4eBox14","t4eBox22",
+      "t5Box13","t5Box24","t5Box25","t5Box22Tax",
+      "rl3Interest","rl3Dividends","rl3TaxWithheld",
+      "t3Interest","t3Dividends","t3CapGains","t3TaxWithheld",
+      "t5007Box11",
+      "t5008Box21","t5008ACB",
+      "t5013BusIncome","t5013CapGains"
     ];
 
     const $ = (id) => document.getElementById(id);
@@ -1112,15 +1279,6 @@
       const m = end.getMonth() - d.getMonth();
       if(m < 0 || (m === 0 && end.getDate() < d.getDate())) age--;
       return Math.max(age,0);
-    }
-
-    function getMonthsBetweenDates(startStr, endStr, defaultMonths=12){
-      if(!startStr || !endStr) return defaultMonths;
-      const start = new Date(startStr+"T00:00:00");
-      const end = new Date(endStr+"T00:00:00");
-      if(isNaN(start) || isNaN(end) || end < start) return 0;
-      let months = (end.getFullYear()-start.getFullYear())*12 + (end.getMonth()-start.getMonth()) + 1;
-      return clamp(months,0,12);
     }
 
     function calcBracketTax(income, brackets){
@@ -1193,7 +1351,43 @@
       if(data.ontFertilityExpenses > 0 && data.province !== "ON") warnings.push("Ontario fertility treatment inputs were entered, but the province selected is not Ontario.");
       if(data.qcChildcareExpenses > 0 && data.province !== "QC") warnings.push("Québec childcare inputs were entered, but the province selected is not Québec.");
       if(data.residencyStatus === "nonresident") warnings.push("Non-resident returns are outside the normal scope of this estimator.");
+      if(data.qInvestments && (data.t5008Box21 > 0 || data.t5008ACB > 0)) warnings.push("T5008-based capital gains estimates should be reconciled with all transactions and ACB records.");
+      if(data.qBenefits && data.t5007Box11 > 0) warnings.push("T5007 benefits treatment can depend on other family income and specific program rules.");
       return warnings;
+    }
+
+    function updateSlipPanels(){
+      const d = getData();
+      const hasQC = d.province === "QC" || d.quebecResidentToggle;
+
+      const showT4      = d.qEmployment;
+      const showRL1     = d.qEmployment && hasQC;
+      const showT4A     = d.qPension;
+      const showT4E     = d.qEI;
+      const showT5      = d.qInvestments;
+      const showRL3     = d.qInvestments && hasQC;
+      const showT3      = d.qInvestments;
+      const showT5007   = d.qBenefits;
+      const showT5008   = d.qInvestments;
+      const showT5013   = d.qPartnership;
+
+      const panels = [
+        ["slipPanelT4",showT4],
+        ["slipPanelRL1",showRL1],
+        ["slipPanelT4A",showT4A],
+        ["slipPanelT4E",showT4E],
+        ["slipPanelT5",showT5],
+        ["slipPanelRL3",showRL3],
+        ["slipPanelT3",showT3],
+        ["slipPanelT5007",showT5007],
+        ["slipPanelT5008",showT5008],
+        ["slipPanelT5013",showT5013]
+      ];
+      panels.forEach(([id,vis])=>{
+        const el = $(id);
+        if(!el) return;
+        el.classList.toggle("hidden", !vis);
+      });
     }
 
     function calculate(){
@@ -1203,15 +1397,94 @@
       const assumptions = [];
       const creditsUsed = [];
 
+      // --- Slip-based derived values ---
+      const slip = {};
+
+      // T4 + RL-1 employment income and source deductions [web:83][web:91][web:86]
+      slip.employmentIncome =
+        num("t4Box14") +
+        num("rl1BoxA");
+
+      slip.taxWithheldEmployment =
+        num("t4Box22") +
+        num("rl1BoxE");
+
+      slip.cppContrib = num("t4Box16") + num("rl1BoxB");
+      slip.eiPremiums = num("t4Box18") + num("rl1BoxC");
+      slip.rppContrib = num("t4Box20");
+      slip.taxableBenefits = num("t4Box40");
+
+      // T4A family (pensions / CPP / OAS) [web:76][web:79]
+      slip.pensionIncome = num("t4aBox16");
+      slip.cppBenefits   = num("t4apCPP");
+      slip.oasIncome     = num("t4oasOAS");
+      slip.taxWithheldPension = num("t4aBox22Tax");
+
+      // T4E – EI benefits [web:84]
+      slip.eiBenefits = num("t4eBox14");
+      slip.taxWithheldEI = num("t4eBox22");
+
+      // T5 / RL-3 / T3 / T5008 – investment and capital [web:65][web:60][web:78][web:84]
+      slip.interestIncome =
+        num("t5Box13") + num("rl3Interest") + num("t3Interest");
+      slip.eligibleDividends =
+        num("t5Box24") + num("rl3Dividends") + num("t3Dividends");
+      slip.nonEligibleDividends = num("t5Box25");
+      slip.taxWithheldInvestments =
+        num("t5Box22Tax") + num("rl3TaxWithheld") + num("t3TaxWithheld");
+
+      const t5008Gain = Math.max(0, num("t5008Box21") - num("t5008ACB"));
+      slip.capitalGains =
+        num("t3CapGains") + t5008Gain + num("t5013CapGains");
+
+      // T5007 – benefits [web:83]
+      slip.benefits = num("t5007Box11");
+
+      // T5013 – partnership income [web:84]
+      slip.partnershipIncome = num("t5013BusIncome");
+
+      // Merge slip values into underlying line items
+      const merged = {...d};
+
+      merged.employmentIncome = (d.employmentIncome || 0) + slip.employmentIncome;
+      merged.taxWithheldEmployment = (d.taxWithheldEmployment || 0) + slip.taxWithheldEmployment;
+      merged.cppContrib = (d.cppContrib || 0) + slip.cppContrib;
+      merged.eiPremiums = (d.eiPremiums || 0) + slip.eiPremiums;
+      merged.rppContrib = (d.rppContrib || 0) + slip.rppContrib;
+
+      merged.pensionIncome = (d.pensionIncome || 0) + slip.pensionIncome;
+      merged.cppBenefits   = (d.cppBenefits || 0) + slip.cppBenefits;
+      merged.oasIncome     = (d.oasIncome || 0) + slip.oasIncome;
+      merged.eiBenefits    = (d.eiBenefits || 0) + slip.eiBenefits;
+
+      merged.interestIncome       = (d.interestIncome || 0) + slip.interestIncome;
+      merged.eligibleDividends    = (d.eligibleDividends || 0) + slip.eligibleDividends;
+      merged.nonEligibleDividends = (d.nonEligibleDividends || 0) + slip.nonEligibleDividends;
+      merged.capitalGains         = (d.capitalGains || 0) + slip.capitalGains;
+
+      merged.socialAssistance = (d.socialAssistance || 0) + 0;
+      merged.workersComp      = (d.workersComp || 0) + 0;
+      merged.socialAssistance += slip.benefits;
+
+      merged.partnershipIncome = (d.partnershipIncome || 0) + slip.partnershipIncome;
+
+      merged.withholdingOther =
+        (d.withholdingOther || 0) +
+        slip.taxWithheldPension +
+        slip.taxWithheldEI +
+        slip.taxWithheldInvestments;
+
+      const m = merged;
+
       const totalIncome =
-        d.employmentIncome + d.commissionIncome + d.businessIncome + d.professionalIncome + d.farmingIncome + d.fishingIncome +
-        d.rentalIncome + d.partnershipIncome + d.interestIncome + d.eligibleDividends + d.nonEligibleDividends +
-        d.capitalGains + d.foreignIncome + d.pensionIncome + d.rrifIncome + d.oasIncome + d.cppBenefits +
-        d.eiBenefits + d.workersComp + d.socialAssistance + d.supportReceived + d.respIncome + d.scholarships +
-        d.lumpSum + d.otherTaxableIncome;
+        m.employmentIncome + m.commissionIncome + m.businessIncome + m.professionalIncome + m.farmingIncome + m.fishingIncome +
+        m.rentalIncome + m.partnershipIncome + m.interestIncome + m.eligibleDividends + m.nonEligibleDividends +
+        m.capitalGains + m.foreignIncome + m.pensionIncome + m.rrifIncome + m.oasIncome + m.cppBenefits +
+        m.eiBenefits + m.workersComp + m.socialAssistance + m.supportReceived + m.respIncome + m.scholarships +
+        m.lumpSum + m.otherTaxableIncome;
 
       const totalDeductions =
-        d.rrspContrib + d.prppContrib + d.rppContrib + d.fhsaDeduction + d.unionDues + d.childCareExpenses +
+        d.rrspContrib + d.prppContrib + m.rppContrib + d.fhsaDeduction + d.unionDues + d.childCareExpenses +
         d.movingExpenses + d.supportPaid + d.carryingCharges + d.employmentExpenses + d.clergyResidence +
         d.northernDeduction + d.businessHomeOffice + d.selfEmploymentExpenses + d.tuitionCarryforwardApplied +
         d.tradeTools + d.cppEnhancementDeduction + d.otherDeductions + d.labourMobilityDeduction + d.capitalLossesApplied;
@@ -1262,11 +1535,11 @@
       const multigenBase = Math.min(FEDERAL.multigenRenovationLimit, d.multigenRenovation);
       if(multigenBase > 0) creditsUsed.push({name:"Multigenerational home renovation credit", amount:multigenBase, value:multigenBase * 0.15});
 
-      const empAmountBase = Math.min(FEDERAL.employmentAmount, d.employmentIncome > 0 ? FEDERAL.employmentAmount : 0);
+      const empAmountBase = Math.min(FEDERAL.employmentAmount, m.employmentIncome > 0 ? FEDERAL.employmentAmount : 0);
       if(empAmountBase > 0) creditsUsed.push({name:"Canada employment amount", amount:empAmountBase, value:empAmountBase * FEDERAL.creditRate});
 
-      if(d.cppContrib > 0) creditsUsed.push({name:"CPP/QPP contribution credit", amount:d.cppContrib, value:d.cppContrib * FEDERAL.creditRate});
-      if(d.eiPremiums > 0) creditsUsed.push({name:"EI premiums credit", amount:d.eiPremiums, value:d.eiPremiums * FEDERAL.creditRate});
+      if(m.cppContrib > 0) creditsUsed.push({name:"CPP/QPP contribution credit", amount:m.cppContrib, value:m.cppContrib * FEDERAL.creditRate});
+      if(m.eiPremiums > 0) creditsUsed.push({name:"EI premiums credit", amount:m.eiPremiums, value:m.eiPremiums * FEDERAL.creditRate});
       if(d.tuitionTransferReceived > 0) creditsUsed.push({name:"Tuition transfer received", amount:d.tuitionTransferReceived, value:d.tuitionTransferReceived * FEDERAL.creditRate});
       if(d.foreignTaxCredits > 0) creditsUsed.push({name:"Foreign tax credit (manual input)", amount:d.foreignTaxCredits, value:d.foreignTaxCredits});
       if(d.dividendTaxCreditManual > 0) creditsUsed.push({name:"Dividend tax credit override", amount:d.dividendTaxCreditManual, value:d.dividendTaxCreditManual});
@@ -1353,7 +1626,7 @@
           amount:d.qcChildcareExpenses,
           value:Math.min(d.qcChildcareExpenses * 0.60, d.qcChildcareExpenses)
         });
-        assumptions.push("Québec childcare expense credit is approximated and actual rates vary with family income and detailed Revenu Québec schedules.");
+        assumptions.push("Québec childcare expense credit is approximated; actual rates vary with family income and detailed Revenu Québec schedules.");
       }
 
       if(d.province === "QC" && d.qcSolidarityEstimate > 0){
@@ -1410,7 +1683,7 @@
       let refundableCredits = 0;
       const refundableItems = [];
 
-      const workingIncome = d.employmentIncome + d.commissionIncome + d.businessIncome + d.professionalIncome + d.farmingIncome + d.fishingIncome;
+      const workingIncome = m.employmentIncome + m.commissionIncome + m.businessIncome + m.professionalIncome + m.farmingIncome + m.fishingIncome;
       if(workingIncome > 3000 && taxableIncome < 35000){
         const cwb = Math.max(0, Math.min(1600, (workingIncome - 3000) * 0.15) - Math.max(0, taxableIncome - 23000) * 0.12);
         if(cwb > 0){
@@ -1421,11 +1694,12 @@
       }
 
       if(d.province === "ON" && d.ontFertilityExpenses > 0){
-        refundableItems.push({name:"Ontario fertility treatment tax credit", value:Math.min(20000, d.ontFertilityExpenses) * 0.25});
+        const val = Math.min(20000, d.ontFertilityExpenses) * 0.25;
+        refundableItems.push({name:"Ontario fertility treatment tax credit", value:val});
       }
 
       const totalWithholding =
-        d.taxWithheldEmployment + d.withholdingOther + d.instalmentsPaid + d.priorYearBalancePaid +
+        m.taxWithheldEmployment + m.withholdingOther + d.instalmentsPaid + d.priorYearBalancePaid +
         d.extensionPayments + refundableCredits + d.otherCreditsApplied;
 
       const totalTaxPayable = Math.max(0, netFederalTax + netProvTax + d.benefitRepayments - d.foreignTaxCredits - d.dividendTaxCreditManual);
@@ -1438,6 +1712,7 @@
       if(d.isNorthernResident) assumptions.push("Northern resident deduction and related territorial/northern rules depend on location, zone type, and qualifying days.");
       if(d.rentPaidAnnual > 0 || d.propertyTaxPaid > 0) assumptions.push("Rent and property tax fields are primarily used for province-specific credit screening and simplified estimates, not full benefits adjudication.");
       if(d.homePurchaseDate) assumptions.push("Home purchase date is recorded for first-time buyer and housing-related review items, but legal qualification must be confirmed separately.");
+      if(d.qEmployment || d.qInvestments || d.qPension || d.qEI) assumptions.push("Slip wizard inputs are mapped into summary lines; verify unusual or rarely used slip boxes manually.");
 
       return {
         data: d,
@@ -1565,8 +1840,8 @@
       $("paymentsTableWrap").innerHTML = `
         <table>
           <tbody>
-            <tr><td>Employment tax withheld</td><td>${money(r.data.taxWithheldEmployment)}</td></tr>
-            <tr><td>Other withholding</td><td>${money(r.data.withholdingOther)}</td></tr>
+            <tr><td>Employment tax withheld (includes slip wizard)</td><td>${money(r.data.taxWithheldEmployment)}</td></tr>
+            <tr><td>Other withholding (pension, EI, investments, other)</td><td>${money(r.data.withholdingOther)}</td></tr>
             <tr><td>Instalments paid</td><td>${money(r.data.instalmentsPaid)}</td></tr>
             <tr><td>Extension payments</td><td>${money(r.data.extensionPayments)}</td></tr>
             <tr><td>Other credits/payments applied</td><td>${money(r.data.otherCreditsApplied)}</td></tr>
@@ -1624,6 +1899,7 @@
         else el.value = data[id];
       });
       updateProvinceHint();
+      updateSlipPanels();
       run();
     }
 
@@ -1636,27 +1912,29 @@
       const presets = {
         single: {
           province:"ON", employmentIncome:70000, taxWithheldEmployment:12000, cppContrib:3800, eiPremiums:1050, rrspContrib:3000,
-          maritalStatus:"single", dependants:0, medicalExpenses:0, charitableDonations:200, tuitionAmount:0, rentPaidAnnual:18000, renter:true
+          maritalStatus:"single", dependants:0, medicalExpenses:0, charitableDonations:200, tuitionAmount:0, rentPaidAnnual:18000, renter:true,
+          qEmployment:true
         },
         family: {
           province:"ON", employmentIncome:95000, taxWithheldEmployment:18000, cppContrib:4050, eiPremiums:1050, rrspContrib:5000,
-          maritalStatus:"married", spouseNetIncome:25000, dependants:2, monthsWithDependants:12, childCareExpenses:8000, medicalExpenses:1200, charitableDonations:500
+          maritalStatus:"married", spouseNetIncome:25000, dependants:2, monthsWithDependants:12, childCareExpenses:8000, medicalExpenses:1200,
+          charitableDonations:500, qEmployment:true
         },
         ontarioRenter: {
           province:"ON", employmentIncome:55000, taxWithheldEmployment:8500, rrspContrib:1000, rentPaidAnnual:21000, renter:true,
-          ontEnergyPropertyInput:21000, ontNorthernEnergyInput:0, dependants:0
+          ontEnergyPropertyInput:21000, ontNorthernEnergyInput:0, dependants:0, qEmployment:true
         },
         quebecWorker: {
           province:"QC", employmentIncome:80000, taxWithheldEmployment:14000, cppContrib:0, eiPremiums:900, rrspContrib:4000,
-          quebecResidentToggle:true, qcChildcareExpenses:0, qcSolidarityEstimate:0, maritalStatus:"single"
+          quebecResidentToggle:true, qcChildcareExpenses:0, qcSolidarityEstimate:0, maritalStatus:"single", qEmployment:true
         },
         selfEmployed: {
           province:"AB", employmentIncome:0, businessIncome:95000, selfEmploymentExpenses:18000, taxWithheldEmployment:0,
-          instalmentsPaid:9000, rrspContrib:8000, isSelfEmployed:true
+          instalmentsPaid:9000, rrspContrib:8000, isSelfEmployed:true, qSelfEmployment:true
         },
         senior: {
           province:"BC", employmentIncome:0, pensionIncome:26000, rrifIncome:15000, cppBenefits:9000, oasIncome:8500,
-          taxWithheldEmployment:3500, isSenior:true, birthDate:"1950-06-01", medicalExpenses:3000
+          taxWithheldEmployment:3500, isSenior:true, birthDate:"1950-06-01", medicalExpenses:3000, qPension:true
         }
       };
       const p = presets[type];
@@ -1668,6 +1946,7 @@
         else el.value = v;
       });
       updateProvinceHint();
+      updateSlipPanels();
       run();
     }
 
@@ -1692,6 +1971,7 @@
 
     function run(){
       updateProvinceHint();
+      updateSlipPanels();
       const result = calculate();
       renderResults(result);
     }
@@ -1718,6 +1998,7 @@
     $("recalcBtn").addEventListener("click", run);
     addSampleButtons();
     updateProvinceHint();
+    updateSlipPanels();
     run();
   </script>
 </body>
